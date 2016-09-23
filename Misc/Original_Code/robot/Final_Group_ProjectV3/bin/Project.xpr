@@ -1,0 +1,2 @@
+Data:2 < ADDXPR ONLY_ADD_IF_NEW "(*:main:buffPtr)"
+Data:2 < ADDXPR ONLY_ADD_IF_NEW "testVar2"
