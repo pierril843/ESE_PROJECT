@@ -9,8 +9,8 @@
 #define JOYSTICK_H_
 
 #define JOY_DEV "/dev/input/js0"
-
+//todo add mutex
 int MortorValue(int);
-void MonitorJoyStick (int[]);
+void* MonitorJoyStick (void*);
 
 #endif /* JOYSTICK_H_ */

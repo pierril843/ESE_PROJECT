@@ -32,10 +32,12 @@ int MotorValue(int value) {
 	return(EXIT_FAILURE);
 }
 
-void MonitorJoyStick (int pipefd[PIPE_ENDS]){
+void* MonitorJoyStick (void * args){
 	int Joy_fd;
 	struct js_event js;
 	char message[10] = "~ F 0 0 ?";
+	int *pipefd[PIPE_ENDS];
+	pipefd[PIPE_ENDS] = args;
 
 	//open Joystick
 	if( ( Joy_fd = open( JOY_DEV, O_RDONLY ) ) < 0 ){
@@ -64,7 +66,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			case (4) :{		//D-PAD LEFT-RIGHT
@@ -76,7 +78,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			case (1) :{		//L-ANALOG UP-DOWN
@@ -88,7 +90,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 					message[ARG2] = UP;
 				else
 					message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			case (3) :{		//R-ANALOG UP-DOWN
@@ -100,7 +102,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 					message[ARG2] = UP;
 				else
 					message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			default :
@@ -119,7 +121,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			case (1) :{
@@ -129,7 +131,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			case (2) :{
@@ -139,7 +141,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			case (3) :{
@@ -149,7 +151,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			case (4) :{
@@ -159,7 +161,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			case (5) :{
@@ -169,7 +171,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			case (6) :{
@@ -179,7 +181,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			case (7) :{
@@ -189,7 +191,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			case (8) :{
@@ -199,7 +201,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			case (9) :{
@@ -209,7 +211,7 @@ void MonitorJoyStick (int pipefd[PIPE_ENDS]){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				Piper(*pipefd,message);
 				break;
 			}
 			default :

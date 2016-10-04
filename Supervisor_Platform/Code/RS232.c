@@ -12,15 +12,15 @@
 #include "fcntl.h"
 #include "stdio.h"
 
-int Open_Port (const char PortLocaltion){
+int Open_Port (const char PortLocaltion[]){
 
 	int fd;
 	// ttyS1, open for reading and writing | doesn't make the file a controlling terminal for the process | non-blocking
-	fd = open(&PortLocaltion, O_RDWR | O_NOCTTY);// | O_NONBLOCK);
+	fd = open(PortLocaltion, O_RDWR | O_NOCTTY);// | O_NONBLOCK);
 
     if (fd == -1){
         //fprintf(stderr, "Unable to open serial port %s\n",strerror(errno));
-        printf("Unable to open %s serial port\n",(char*)&PortLocaltion);
+        printf("Unable to open %s serial port\n",&PortLocaltion);
         //TODO add log message
         fflush(stdout);
         return(fd);

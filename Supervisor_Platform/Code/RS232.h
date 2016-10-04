@@ -11,7 +11,7 @@
 #define RS232PORT "/dev/ttyUSB0" // where the serial port is
 
 int Setup_Port (int);
-int Open_Port (const char);
+int Open_Port (const char[]);
 int Close_Port (int);
 
 #endif /* RS232_H_ */
