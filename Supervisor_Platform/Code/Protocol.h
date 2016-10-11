@@ -9,7 +9,7 @@
 #define PROTOCOL_H_
 
 //Protocol
-#define PACKET_LEN 	10
+#define PACKET_LEN 	9
 #define FUNCT	2
 #define ARG1	4
 #define ARG2	6

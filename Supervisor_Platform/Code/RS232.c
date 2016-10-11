@@ -8,9 +8,9 @@
 #include "errno.h"
 #include "stdlib.h"
 #include "termios.h"
-//#include "sys/stat.h"
 #include "fcntl.h"
 #include "stdio.h"
+#include "syslog.h"
 
 int Open_Port (const char PortLocaltion[]){
 
@@ -19,10 +19,7 @@ int Open_Port (const char PortLocaltion[]){
 	fd = open(PortLocaltion, O_RDWR | O_NOCTTY);// | O_NONBLOCK);
 
     if (fd == -1){
-        //fprintf(stderr, "Unable to open serial port %s\n",strerror(errno));
-        printf("Unable to open %s serial port\n",&PortLocaltion);
-        //TODO add log message
-        fflush(stdout);
+        syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Unable to open %s serial port",PortLocaltion);
         return(fd);
     }
 
@@ -30,18 +27,17 @@ int Open_Port (const char PortLocaltion[]){
 }
 int Close_Port (int fd){
 	if (close(fd) == EXIT_FAILURE){
-		printf("Unable to close fd %d serial port\n",fd);
-		//todo add logging
+		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Unable to close fd %d serial port",fd);
+		return(EXIT_FAILURE);
 	}
 	return(EXIT_SUCCESS);
 }
+
 int Setup_Port (int fd){
 	struct termios options;
 
 	if((tcgetattr(fd,&options)) < 0){
-		fprintf(stderr, "Failed to getattr: %d\n", fd);
-		printf("Failed to getattr\n");
-		fflush(stdout);
+		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Failed to getattr, fd: %d", fd);
 		return(EXIT_FAILURE);
 	}
 
@@ -65,9 +61,7 @@ int Setup_Port (int fd){
 	tcflush(fd, TCIFLUSH);
 
 	if((tcsetattr(fd, TCSANOW, &options)) < 0){
-		//fprintf(stderr, "Failed to setattr: %d, %s\n", fd, strerror(errno) );
-		printf("Failed to setattr\n");
-		fflush(stdout);
+		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Failed to setattr, fd: %d", fd);
 		return(EXIT_FAILURE);
 	}
 	return(EXIT_SUCCESS);

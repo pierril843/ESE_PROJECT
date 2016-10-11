@@ -11,76 +11,80 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "pthread.h"
+#include "unistd.h"
 #include "RS232.h"
 #include "Joystick.h"
 #include "Pipes.h"
-#include "Logger.h"
+#include "syslog.h"
 
 #define ECHOCHECK_MODE 	0
-#define VERBOSE 		4
+#define PRINT_COMMANDS 	1
+
 
 int main(void) {
 	char Echo[10];
-	char Command[10];
-	int fd = 0;
-	int pid;
-	int iobytes;
+	char Command[9];
 	pthread_t JoystickThread;
+	int iobytes;
+	int fd = 3;
 	int pipefd[PIPE_ENDS];
-	int *(pipefd_p[PIPE_ENDS]);
-	pipefd_p[0] = &pipefd[0];
-
-	if (Create_Log(LOG) == FILE_EXISTS_ERROR){
-		Clear_Log(LOG);
-		Logger(LOG,EVENT,"Log Cleared", getpid());
-	}
 
 
 	if (Create_Pipe(pipefd) == EXIT_FAILURE){
-		Logger(LOG,CRASH,"Pipe creation failed",getpid());
-		printf("error creating pipe\n");
+		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Pipe creation failed");
 		exit(EXIT_FAILURE);
 	}
 
-	if (pthread_create(&JoystickThread,NULL,&MonitorJoyStick, (void*)pipefd_p) == EXIT_FAILURE){
-		Logger(LOG,CRASH,"joystick thread creation failed",getpid());
-		printf("error creating joystick thread\n");
+	if (pthread_create(&JoystickThread,NULL,&MonitorJoyStick, (void*)&pipefd) == EXIT_FAILURE){
+		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Joystick thread creation failed");
 		exit(EXIT_FAILURE);
 	}
+
+	//todo make two ifendif for weather you send it across rs232 or sockets or if
+	//could check for access to stack as way to know if rs232 usb port of on this vs pie3
 
 	if ((fd = Open_Port(RS232PORT)) != EXIT_FAILURE){
-		Setup_Port(fd);
+		if (Setup_Port(fd) == EXIT_FAILURE){
+			syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"RS-232 port setup failed");
+			exit(EXIT_FAILURE);
+		}
 	}
 	else{
-		Logger(LOG,CRASH,"Unable to open serial port fd",getpid());
-		printf("error opening %s\n", RS232PORT);
+		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Open access to RS-232 port failed, fd:%d",fd);
 		exit(EXIT_FAILURE);
 	}
 
 
 	while (1) {
+		//todo check if thread is still running exit and log if not
 		if ((read(pipefd[PIPEREAD], Command, sizeof(Command))) < 0) {//busy wait for something to show up
 			printf ("pipe read error\n");
-			//todo: add log for error
+			syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Pipe read failed");
 		}
+		else{
+			if ((iobytes = write(fd, Command, sizeof(Command))) < 0){
+				printf ("RS-232 write error\n");
+				syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"RS-232 write failed");
+			}
 
-		iobytes = write(fd, Command, sizeof(Command));
+			//Debug only
+			// echo sent command onto screen for testing purposes
+			if (PRINT_COMMANDS){
+				write (1, Command, sizeof(Command));
+				fflush(stdout);//Todo check if needed
+				fprintf(stdout,"\nJob's Done. Wrote %d bytes pid:%d\n", iobytes, getpid());
+				fflush(stdout);//Todo check if needed
+			}
 
-		//todo Debug only
-		// echo sent command onto screen for testing purposes
-		write (1, Command, sizeof(Command));
-		fflush(stdout);//Todo check if needed
-		//todo Debug only
-		// printf out how many bytes were written, also classic Warcraft 3 Peasant line
-		printf("Job's Done. Wrote %d bytes\n", iobytes);
-		fflush(stdout);//Todo check if needed
+			if (ECHOCHECK_MODE){
+				iobytes = read(fd, Echo, 6);
+			}
 
-		if (ECHOCHECK_MODE){
-			iobytes = read(fd, Echo, 6);
+			if (PRINT_COMMANDS & ECHOCHECK_MODE){
+				printf("Char read:%d \nReply is:%s\n",iobytes, Echo);
+				fflush(stdout);//Todo check if needed
+			}
 		}
-		//todo debug only
-		printf("Char read:%d \nReply is:%s\n",iobytes, Echo);
-		fflush(stdout);//Todo check if needed
 	}
 	return (0);
 }

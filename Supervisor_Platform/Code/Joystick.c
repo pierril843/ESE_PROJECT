@@ -11,7 +11,8 @@
 #include "stdlib.h"
 #include "linux/joystick.h"
 #include "fcntl.h"
-
+#include "syslog.h"
+//todo add signal catcher for when parent thread closes
 int MotorValue(int value) {
 	int bin = 0;
 	int BinSize = BINSIZE;
@@ -35,14 +36,18 @@ int MotorValue(int value) {
 void* MonitorJoyStick (void * args){
 	int Joy_fd;
 	struct js_event js;
-	char message[10] = "~ F 0 0 ?";
-	int *pipefd[PIPE_ENDS];
-	pipefd[PIPE_ENDS] = args;
+	char message[PACKET_LEN] = "~ F 0 0 ?";
+	int pipefd[PIPE_ENDS];
+	pipefd[PIPEREAD] = ((int*)args)[PIPEREAD];
+	pipefd[PIPEWRITE] = ((int*)args)[PIPEWRITE];
+
+
+
+
 
 	//open Joystick
 	if( ( Joy_fd = open( JOY_DEV, O_RDONLY ) ) < 0 ){
-		printf( "Couldn't open joystick device %s\n", JOY_DEV );
-		fflush(stdout);
+		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Couldn't open joystick device %s", JOY_DEV);
 		exit(EXIT_FAILURE);
 	}
 
@@ -66,7 +71,7 @@ void* MonitorJoyStick (void * args){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			case (4) :{		//D-PAD LEFT-RIGHT
@@ -78,7 +83,7 @@ void* MonitorJoyStick (void * args){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			case (1) :{		//L-ANALOG UP-DOWN
@@ -90,7 +95,7 @@ void* MonitorJoyStick (void * args){
 					message[ARG2] = UP;
 				else
 					message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			case (3) :{		//R-ANALOG UP-DOWN
@@ -102,7 +107,7 @@ void* MonitorJoyStick (void * args){
 					message[ARG2] = UP;
 				else
 					message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			default :
@@ -121,7 +126,7 @@ void* MonitorJoyStick (void * args){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			case (1) :{
@@ -131,7 +136,7 @@ void* MonitorJoyStick (void * args){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			case (2) :{
@@ -141,7 +146,7 @@ void* MonitorJoyStick (void * args){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			case (3) :{
@@ -151,7 +156,7 @@ void* MonitorJoyStick (void * args){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			case (4) :{
@@ -161,7 +166,7 @@ void* MonitorJoyStick (void * args){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			case (5) :{
@@ -171,7 +176,7 @@ void* MonitorJoyStick (void * args){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			case (6) :{
@@ -181,7 +186,7 @@ void* MonitorJoyStick (void * args){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			case (7) :{
@@ -191,7 +196,7 @@ void* MonitorJoyStick (void * args){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			case (8) :{
@@ -201,7 +206,7 @@ void* MonitorJoyStick (void * args){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			case (9) :{
@@ -211,7 +216,7 @@ void* MonitorJoyStick (void * args){
 				else
 					message[ARG1] = ZEROED;
 				message[ARG2] = ZEROED;
-				Piper(*pipefd,message);
+				Piper(pipefd,message);
 				break;
 			}
 			default :
@@ -223,6 +228,7 @@ void* MonitorJoyStick (void * args){
 		}
 		else{
 			//printf("undocumented command\n");
+			syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Undocumented joystick command entered");
 			message[FUNCT] = DEFAULT;
 			message[ARG1] = ZEROED;
 			message[ARG2] = ZEROED;
