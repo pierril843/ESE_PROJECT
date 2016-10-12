@@ -79,10 +79,10 @@ int Socket_Client_Init(){
     return(sockfd);
 }
 
-int Socket_Read(int listenfd, char* (Message[PACKET_LEN])){
+int Socket_Read(int listenfd, char (Message[PACKET_LEN])){
 	int connfd = 0;
 	connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
-    if (read(connfd, *Message, PACKET_LEN) < PACKET_LEN){
+    if (read(connfd, Message, PACKET_LEN) < PACKET_LEN){
     	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Didnt read whole command from socket");
     	close(connfd);
     	return(EXIT_FAILURE);
