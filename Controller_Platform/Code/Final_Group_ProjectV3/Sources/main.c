@@ -97,36 +97,59 @@ void main(void)
     switch(fullInstruction[0])
     {
       case 'R':
-      //function call
       setDCMotorSpeed(fullInstruction);
-      echo(fullInstruction); //temp for debugging
+      echo(fullInstruction);
       break;
       case 'L':
-      //function call
       setDCMotorSpeed(fullInstruction);
-      echo(fullInstruction); //temp for debugging
+      echo(fullInstruction);
       break;
       case 'S':
-      //function call
       changeStep(fullInstruction);
-      echo(fullInstruction); //temp for debugging
+      echo(fullInstruction);
       break;
       case 'O':
-      //function call
       setPulseWidth(fullInstruction);
-      echo(fullInstruction); //temp for debugging
-      break;
-      case 'P':
-      //function call
-       echo(fullInstruction); //temp for debugging
-      break;
-      case 'E':
-      //function call
       echo(fullInstruction);
       break;
       case 'C':
       homeCam();
       echo(fullInstruction);
+      break;      
+      case 'A':
+      //function call
+      echo(fullInstruction);
+      break;
+      case 'B':
+      //function call
+      echo(fullInstruction);
+      break;
+      case 'D':
+      //function call
+      echo(fullInstruction);
+      break;
+      case 'E':
+      //function call
+      echo(fullInstruction);
+      break;
+      case 'F':
+      //function call
+      echo(fullInstruction);
+      break;
+      case 'G':
+      //function call
+      echo(fullInstruction);
+      break;
+      case 'H':
+      //function call
+      echo(fullInstruction);
+      break;
+      case 'I':
+      //function call
+      echo(fullInstruction);
+      break;
+      case 'P':
+      echo(fullInstruction); //temp for debugging
       break;
       default:
       echo(errorMessage);  
