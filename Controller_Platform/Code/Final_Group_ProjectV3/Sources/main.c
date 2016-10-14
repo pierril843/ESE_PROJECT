@@ -33,11 +33,12 @@ void logCommands();
 #define LIMITRIGHT 0b10000000
 
 //Camera homing prototype
-void homeCam(void);
+void homeCam(unsigned char *);
 
 //Globals for camera home
 unsigned int limitswitches;
 unsigned int volatile stepCount;
+unsigned char tempCamHome[6] = "C 0 0";
 
 void main(void)
 {
@@ -72,7 +73,7 @@ void main(void)
   EnableInterrupts;
   
   // home camera
-  homeCam(); 
+  homeCam(tempCamHome); 
   
   
   //infinite for loop
@@ -113,7 +114,7 @@ void main(void)
       echo(fullInstruction);
       break;
       case 'C':
-      homeCam();
+      homeCam(fullInstruction);
       echo(fullInstruction);
       break;      
       case 'A':
@@ -272,7 +273,7 @@ enter function description
  enter function description
 
 =======================================================================================================*/
-void homeCam()
+void homeCam(unsigned char *instruction)
 {  
   int stepsRemaining = 0;
   
@@ -281,6 +282,9 @@ void homeCam()
   
   pulseWidth = 1500;
   
+  if (instruction[2] == '0') 
+  {
+    
   while(!(limitswitches & LIMITLEFT))
   {
     stepsize = 255;
@@ -309,7 +313,7 @@ void homeCam()
   
   LCDclear();
   LCDprintf("Done HomeCam");
-  
+  } 
 }
 //===================================================================================================  
 
