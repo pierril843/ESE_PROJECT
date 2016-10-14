@@ -38,7 +38,7 @@ void homeCam(unsigned char *);
 //Globals for camera home
 unsigned int limitswitches;
 unsigned int volatile stepCount;
-unsigned char tempCamHome[6] = "C 0 0";
+unsigned char tempCamHome[6] = "C 1 0";
 
 void main(void)
 {
@@ -282,7 +282,7 @@ void homeCam(unsigned char *instruction)
   
   pulseWidth = 1500;
   
-  if (instruction[2] == '0') 
+  if (instruction[2] == '1') 
   {
     
   while(!(limitswitches & LIMITLEFT))
