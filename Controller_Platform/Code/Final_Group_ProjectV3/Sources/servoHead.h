@@ -33,6 +33,8 @@
 //offset to reach -90 with an input of 0
 #define NEGATIVE_90_DEGREE_OFFSET 600
 
+//Temp DC motor Define
+#define TCTL4RiseEdgeCapture 0b00000101
 //Globals
 extern uint volatile ISRPulseWidth;
 extern uchar result;

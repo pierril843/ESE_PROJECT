@@ -31,7 +31,7 @@ void logCommands();
 //Defines
 #define LIMITLEFT 0b01000000
 #define LIMITRIGHT 0b10000000
-
+#define TCTL3RiseEdgeCapture 0b00000101
 //Camera homing prototype
 void homeCam(unsigned char *);
 
@@ -40,6 +40,17 @@ unsigned int limitswitches;
 unsigned int volatile stepCount;
 unsigned char tempCamHome[6] = "C 1 0";
 
+//Globals for DC motor Speed calculations
+unsigned int firstEdgeFlagR = 0;
+unsigned int firstEdgeFlagL = 0;
+unsigned int secondEdgeFlagR = 0;
+unsigned int secondEdgeFlagL = 0;
+unsigned int firstEdgeR = 0;
+unsigned int firstEdgeL = 0;
+unsigned int secondEdgeR = 0;
+unsigned int secondEdgeL = 0;
+unsigned long int interuptCountR = 0;
+unsigned long int interuptCountL = 0;
 void main(void)
 {
    unsigned char fullInstruction[8] = "";
@@ -267,6 +278,53 @@ enter function description
      FORCE_BITS(PTT, TOP4BITS, (lookup[newIndex]));
   
   }
+/*=====================Right DC Motor Speed interrupt handler===================================
+Global variables - 
+
+Inputs - 
+
+Outputs - 
+=======================================================================================*/  
+  interrupt 8 void rightDCMotorSpeed(void)
+    {
+      if (firstEdgeFlagR == 0)
+        {
+          firstEdgeR = TC0;
+          firstEdgeFlagR = 1;
+        }
+      else if (firstEdgeFlagR == 1)
+        {
+          secondEdgeR = TC1;
+          firstEdgeFlagR = 0;
+        }
+        
+        interuptCountR += 1;
+    }
+    
+/*=====================Left DC Motor Speed interrupt handler===================================
+Global variables - 
+
+Inputs - 
+
+Outputs - 
+=======================================================================================*/  
+  interrupt 9 void leftDCMotorSpeed(void)
+    {
+      if (firstEdgeFlagL == 0)
+        {
+          firstEdgeL = TC1;
+          firstEdgeFlagL = 1;
+        }
+      else if (firstEdgeFlagL == 1)
+        {
+          secondEdgeL = TC1;
+          firstEdgeFlagL = 0;
+        }
+        
+        interuptCountL += 1;
+    }    
+    
+      
 
 /*=======================================homeCam()======================================================
 

@@ -1,23 +1,6 @@
 #include "LCD.h"
 #include "Macros.h"
 
-/*
-void msDelay( int k )
-{
-  int ix;			// counter for number of ms delayed 
-
- 	TC3 	= (TCNT + (125*8));		// preset TC0 for first OC event
-	MAKE_CHNL_OC(3);	// ready to go - enable TC0 as OC 
-
-	for (ix = 0; ix < k; ix++) {	// for number of ms to delay? 
-		while(!(TFLG1 & TFLG1_C3F_MASK));	// wait for OC event 
-          	TC3 += (125*8);		// rearm the OC register, this clears TFLG1 
-   	}
-
-   	TIOS  &= LOW(~TIOS_IOS3_MASK);  	// all done ? turn-off OC on TC0 
-}
-*/
-
 void msDelay( int k )
 {
   int ix;			/* counter for number of ms delayed */
