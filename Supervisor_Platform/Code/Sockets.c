@@ -10,7 +10,7 @@
 #include "Sockets.h"
 #include "Protocol.h"
 
-#define SERVER_IP "174.114.123.81"
+#define SERVER_IP "192.168.0.108"
 
 int Socket_Init(int processType){
 	if (processType == CLIENT){

@@ -22,7 +22,7 @@
 #define PRINT_COMMANDS 	1
 #define RS_232		1
 #define SOCKETS		0
-#define CONNECTION  RS_232
+#define CONNECTION  SOCKETS
 
 
 int main(void) {
@@ -39,10 +39,10 @@ int main(void) {
 		exit(EXIT_FAILURE);
 	}
 
-	if (pthread_create(&JoystickThread,NULL,&MonitorJoyStick, (void*)&pipefd) == EXIT_FAILURE){
-		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Joystick thread creation failed");
-		exit(EXIT_FAILURE);
-	}
+//	if (pthread_create(&JoystickThread,NULL,&MonitorJoyStick, (void*)&pipefd) == EXIT_FAILURE){
+//		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Joystick thread creation failed");
+//		exit(EXIT_FAILURE);
+//	}
 
 	//todo make two ifendif for weather you send it across rs232 or sockets or if
 	//could check for access to stack as way to know if rs232 usb port of on this vs pie3
