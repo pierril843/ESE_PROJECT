@@ -31,14 +31,26 @@ void logCommands();
 //Defines
 #define LIMITLEFT 0b01000000
 #define LIMITRIGHT 0b10000000
-
+#define TCTL3RiseEdgeCapture 0b00000101
 //Camera homing prototype
-void homeCam(void);
+void homeCam(unsigned char *);
 
 //Globals for camera home
 unsigned int limitswitches;
 unsigned int volatile stepCount;
+unsigned char tempCamHome[6] = "C 1 0";
 
+//Globals for DC motor Speed calculations
+unsigned int firstEdgeFlagR = 0;
+unsigned int firstEdgeFlagL = 0;
+unsigned int secondEdgeFlagR = 0;
+unsigned int secondEdgeFlagL = 0;
+unsigned int firstEdgeR = 0;
+unsigned int firstEdgeL = 0;
+unsigned int secondEdgeR = 0;
+unsigned int secondEdgeL = 0;
+unsigned long int interuptCountR = 0;
+unsigned long int interuptCountL = 0;
 void main(void)
 {
    unsigned char fullInstruction[8] = "";
@@ -72,7 +84,7 @@ void main(void)
   EnableInterrupts;
   
   // home camera
-  homeCam(); 
+  homeCam(tempCamHome); 
   
   
   //infinite for loop
@@ -97,36 +109,59 @@ void main(void)
     switch(fullInstruction[0])
     {
       case 'R':
-      //function call
       setDCMotorSpeed(fullInstruction);
-      echo(fullInstruction); //temp for debugging
+      echo(fullInstruction);
       break;
       case 'L':
-      //function call
       setDCMotorSpeed(fullInstruction);
-      echo(fullInstruction); //temp for debugging
+      echo(fullInstruction);
       break;
       case 'S':
-      //function call
       changeStep(fullInstruction);
-      echo(fullInstruction); //temp for debugging
+      echo(fullInstruction);
       break;
       case 'O':
-      //function call
       setPulseWidth(fullInstruction);
-      echo(fullInstruction); //temp for debugging
+      echo(fullInstruction);
       break;
-      case 'P':
+      case 'C':
+      homeCam(fullInstruction);
+      echo(fullInstruction);
+      break;      
+      case 'A':
       //function call
-       echo(fullInstruction); //temp for debugging
+      echo(fullInstruction);
+      break;
+      case 'B':
+      //function call
+      echo(fullInstruction);
+      break;
+      case 'D':
+      //function call
+      echo(fullInstruction);
       break;
       case 'E':
       //function call
       echo(fullInstruction);
       break;
-      case 'C':
-      homeCam();
+      case 'F':
+      //function call
       echo(fullInstruction);
+      break;
+      case 'G':
+      //function call
+      echo(fullInstruction);
+      break;
+      case 'H':
+      //function call
+      echo(fullInstruction);
+      break;
+      case 'I':
+      //function call
+      echo(fullInstruction);
+      break;
+      case 'P':
+      echo(fullInstruction); //temp for debugging
       break;
       default:
       echo(errorMessage);  
@@ -243,13 +278,60 @@ enter function description
      FORCE_BITS(PTT, TOP4BITS, (lookup[newIndex]));
   
   }
+/*=====================Right DC Motor Speed interrupt handler===================================
+Global variables - 
+
+Inputs - 
+
+Outputs - 
+=======================================================================================*/  
+  interrupt 8 void rightDCMotorSpeed(void)
+    {
+      if (firstEdgeFlagR == 0)
+        {
+          firstEdgeR = TC0;
+          firstEdgeFlagR = 1;
+        }
+      else if (firstEdgeFlagR == 1)
+        {
+          secondEdgeR = TC1;
+          firstEdgeFlagR = 0;
+        }
+        
+        interuptCountR += 1;
+    }
+    
+/*=====================Left DC Motor Speed interrupt handler===================================
+Global variables - 
+
+Inputs - 
+
+Outputs - 
+=======================================================================================*/  
+  interrupt 9 void leftDCMotorSpeed(void)
+    {
+      if (firstEdgeFlagL == 0)
+        {
+          firstEdgeL = TC1;
+          firstEdgeFlagL = 1;
+        }
+      else if (firstEdgeFlagL == 1)
+        {
+          secondEdgeL = TC1;
+          firstEdgeFlagL = 0;
+        }
+        
+        interuptCountL += 1;
+    }    
+    
+      
 
 /*=======================================homeCam()======================================================
 
  enter function description
 
 =======================================================================================================*/
-void homeCam()
+void homeCam(unsigned char *instruction)
 {  
   int stepsRemaining = 0;
   
@@ -258,6 +340,9 @@ void homeCam()
   
   pulseWidth = 1500;
   
+  if (instruction[2] == '1') 
+  {
+    
   while(!(limitswitches & LIMITLEFT))
   {
     stepsize = 255;
@@ -286,7 +371,7 @@ void homeCam()
   
   LCDclear();
   LCDprintf("Done HomeCam");
-  
+  } 
 }
 //===================================================================================================  
 

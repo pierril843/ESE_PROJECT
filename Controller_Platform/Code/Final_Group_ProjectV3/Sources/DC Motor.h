@@ -3,7 +3,8 @@
 
 #include <hidef.h>      /* common defines and macros */
 #include "derivative.h"      /* derivative-specific definitions */
-
+//DC motor timer channel defines
+//#define TCTL3RiseEdgeCapture 0b00000101 
 //Motor Macros
 #define   ENABLE_PWM_CHNL(chnl)       SET_BITS(PWME,1<<(chnl))
 #define   MOTOR_ENABLE_PORT           PORTB
