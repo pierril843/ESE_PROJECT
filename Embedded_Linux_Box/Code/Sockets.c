@@ -9,6 +9,7 @@
 #include "syslog.h"
 #include "Sockets.h"
 #include "Protocol.h"
+#include "netdb.h"
 
 #define SERVER_IP "174.114.123.81"
 
@@ -32,7 +33,7 @@ int Socket_Server_Init(){
 	}
 
 	//Setup
-	memset (&serv_addr, 0, sizeof (server_addr));
+	memset (&serv_addr, 0, sizeof (serv_addr));
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	serv_addr.sin_port = htons(5000);
@@ -55,6 +56,7 @@ int Socket_Client_Init(){
     int sockfd = 0;
     struct sockaddr_in serv_addr;
 	struct hostent *host;
+	int addr;
 	
 	host = gethostbyname ("localhost");
 
@@ -67,7 +69,7 @@ int Socket_Client_Init(){
     }
 
     memset(&serv_addr, 0, sizeof(serv_addr));
-	serv_addr.sin_addr.s_addr = addr
+	serv_addr.sin_addr.s_addr = addr;
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(5000);
 
@@ -116,3 +118,4 @@ int Socket_Write(int sockfd, char Message[PACKET_LEN]){
     return(EXIT_SUCCESS);
 }
 //todo close sockets after clients fails
+
