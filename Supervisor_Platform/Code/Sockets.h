@@ -16,7 +16,7 @@
 int Socket_Init(int);
 int Socket_Server_Init();
 int Socket_Client_Init();
-int Socket_Read(int, char*([]));
+int Socket_Read(int, char([]));
 int Socket_Write(int, char[]);
 
 #endif /* SOCKETS_H_ */

@@ -19,7 +19,7 @@ int Create_Pipe(int fd[PIPE_ENDS]){
 
 int Piper(int pipefd[PIPE_ENDS], char Message[10]){
 	int state;
-	if ((state = write(pipefd[PIPEWRITE], Message, 10)) != 10) {
+	if ((state = write(pipefd[PIPEWRITE], Message, 9)) != 9) {
 		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR), "Write to pipe failed");
 		return(EXIT_FAILURE);
 	}
