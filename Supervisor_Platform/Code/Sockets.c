@@ -106,16 +106,16 @@ int Socket_Write(int sockfd, char Message[PACKET_LEN]){
     	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Didnt write whole command from socket");
     	return(EXIT_FAILURE);
     }
-
-    if (read(sockfd,returnMessage, PACKET_LEN) < PACKET_LEN){
-    	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Didnt read whole command from socket");
-    	return(EXIT_FAILURE);
-    }
-
-    if (strcmp(Message,returnMessage) != EXIT_SUCCESS){
-    	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Command sent doesnt equal command received");
-    	return(EXIT_FAILURE);
-    }
+//    sleep(250);
+//    if (read(sockfd,returnMessage, PACKET_LEN) < PACKET_LEN){
+//    	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Didnt read whole command from socket");
+//    	return(EXIT_FAILURE);
+//    }
+//
+//    if (strcmp(Message,returnMessage) != EXIT_SUCCESS){
+//    	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Command sent doesnt equal command received");
+//    	return(EXIT_FAILURE);
+//    }
     return(EXIT_SUCCESS);
 }
 //todo close sockets after clients fails
