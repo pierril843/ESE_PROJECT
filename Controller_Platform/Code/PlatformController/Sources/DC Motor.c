@@ -4,8 +4,7 @@
 
 char leftmotorduty;
 char rightmotorduty;
-
-//Globals for DC motor Speed calculations
+/*/Globals for DC motor Speed calculations
 unsigned int volatile firstEdgeFlagR = 0;
 unsigned int volatile firstEdgeFlagL = 0;
 unsigned int volatile secondEdgeFlagR = 0;
@@ -30,66 +29,158 @@ signed long int volatile localRMotorPeriod = 0;
 signed long int volatile localLMotorPeriod = 0;
 signed long int volatile REncoderFrequency = 0;
 signed long int volatile LEncoderFrequency = 0;
+*/
+//Setpoint Variables
+//signed int RMotorSetPoint = 0;
+//signed int RMotorError = 0; 
 
-void setDCMotorSpeed(unsigned char *instructPtr) {
-  if (instructPtr[0] == 'L')
+signed long int RMotorLocalPeriod = 0;
+signed long int LMotorLocalPeriod = 0;
+
+signed long int volatile RiState;
+signed long int volatile LiState;
+signed int volatile RiMax = 390;
+signed int volatile RiMin = -390;
+signed int volatile RiGain = 1;
+signed int volatile RpGain = 2;
+signed int volatile LiMax = 390;
+signed int volatile LiMin = -390;
+signed int volatile LiGain = 1;
+signed int volatile LpGain = 2;
+//signed int volatile dGain;
+//signed int volatile error;
+//signed int volatile position;
+signed long int volatile RpTerm = 0;
+signed long int volatile LpTerm = 0;
+//signed int volatile dTerm;
+signed long int volatile RiTerm = 0;
+signed long int volatile LiTerm = 0;
+signed long int volatile Rerror = 0;
+signed long int volatile Lerror = 0;
+signed long long int volatile RtempPWMDuty = 0;
+signed long long int volatile LtempPWMDuty = 0;
+ 
+
+void setDCMotorSpeed(unsigned char *instructPtr)
+{    
+  if (instructPtr[0] == 'L') 
+	{
+		if (instructPtr[4] == '2')
+		{
+			if (instructPtr[2] == '1')
+			{
+				DisableInterrupts;
+				LMotorSetPoint = 208;
+				MOTOR_L_DUTY = 150;      
+				EnableInterrupts;
+				LCDclear();
+				LCDprintf("L Motor For");
+				SET_MOTOR_L_FORWARD;				
+			}						
+			else if (instructPtr[2] == '2')
+			{
+				DisableInterrupts;
+				LMotorSetPoint = 388;
+				MOTOR_L_DUTY = 225;
+				EnableInterrupts;
+				LCDclear();
+				LCDprintf("L Motor For");
+				SET_MOTOR_L_FORWARD;				
+			}
+		}	
+		else if (instructPtr[4] == '1')
+		{
+			if (instructPtr[2] == '1')
+			{		
+				DisableInterrupts;
+				LMotorSetPoint = 208;
+				MOTOR_L_DUTY = 150;
+				EnableInterrupts;
+				LCDclear();
+				LCDprintf("L Motor For");
+				SET_MOTOR_L_BACKWARD;				
+			}			
+			else if (instructPtr[2] == '2')
+			{
+				DisableInterrupts;
+				LMotorSetPoint = 388;
+				MOTOR_L_DUTY = 225;
+				EnableInterrupts;
+				LCDclear();
+				LCDprintf("L Motor For");
+				SET_MOTOR_L_BACKWARD;				
+			}
+		}	
+		else
+		{
+			DisableInterrupts;
+			LMotorSetPoint = 0;
+			EnableInterrupts;
+			LCDclear();
+			LCDprintf("L Motor Stop");
+			SET_MOTOR_L_STOP;
+		}
+	}
+  else if (instructPtr[0] == 'R')
   {
-    //LCDprintf("L");
-    if (instructPtr[4] == '1')
-    {
-      SET_MOTOR_L_FORWARD;
-      LCDclear();
-      LCDprintf("L Motor For");
-      
-    }
-    else if (instructPtr[4] == '2')
-    {
-      SET_MOTOR_L_BACKWARD;
-      LCDclear();
-      LCDprintf("L Motor Back");
-    }
-    else
-    {
-      SET_MOTOR_L_STOP;
-      LCDclear();
-      LCDprintf("L Motor Stop");
-    }
-    
-    leftmotorduty = ((instructPtr[2]-48)*10); //ascii 
-    MOTOR_L_DUTY = ((instructPtr[2]-48)*10); //change later (not likely) number between 0 - 100 
-  }
-   else if (instructPtr[0] == 'R')
-   {
-      //LCDprintf("R");
-     if (instructPtr[4] == '1')
-    {
-      SET_MOTOR_R_FORWARD;
-      LCDclear();
-      LCDprintf("R Motor For"); 
-    }
-    else if (instructPtr[4] == '2')
-    {
-      SET_MOTOR_R_BACKWARD;
-      LCDclear();
-      LCDprintf("R Motor Back");
-    }
-    else
-    {
-      SET_MOTOR_R_STOP;
-      LCDclear();
-      LCDprintf("R Motor Stop");
-    }
-     rightmotorduty = ((instructPtr[2]-48)*10);
-     MOTOR_R_DUTY = ((instructPtr[2]-48)*10); //change later (not likely) number between 0 - 100
-   }
-    
-	
-	
-	//MOTOR_R_DUTY = number between 0 - 100
-
-  
-  
-  //MOTOR_L_DUTY = number between 0 - 100
+    if (instructPtr[4] == '2')
+		{
+			if (instructPtr[2] == '1')
+			{				
+				DisableInterrupts;
+				RMotorSetPoint = 208;
+				MOTOR_R_DUTY = 150;
+				EnableInterrupts;
+				LCDclear();
+				LCDprintf("L Motor For");
+				SET_MOTOR_R_FORWARD; 				
+			}		
+			else if (instructPtr[2] == '2')
+			{
+				DisableInterrupts;
+				RMotorSetPoint = 388;
+				MOTOR_R_DUTY = 225;
+				EnableInterrupts;
+				LCDclear();
+				LCDprintf("L Motor For");
+				SET_MOTOR_R_FORWARD;
+				
+			}
+		}	
+		else if (instructPtr[4] == '1')
+		{
+			if (instructPtr[2] == '1')
+			{ 				
+				DisableInterrupts;
+				RMotorSetPoint = 208;
+				MOTOR_R_DUTY = 150;
+				EnableInterrupts;
+				LCDclear();
+				LCDprintf("L Motor For");
+				SET_MOTOR_R_BACKWARD;
+				
+			}			
+			else if (instructPtr[2] == '2')
+			{
+				DisableInterrupts;
+				RMotorSetPoint = 388;
+				MOTOR_R_DUTY = 225;
+				EnableInterrupts;
+				LCDclear();
+				LCDprintf("L Motor For");
+				SET_MOTOR_R_BACKWARD;				
+			}
+		}	
+		else
+		{
+			DisableInterrupts;
+			RMotorSetPoint = 0;
+			EnableInterrupts;
+			LCDclear();
+			LCDprintf("L Motor Stop");
+			SET_MOTOR_R_STOP;
+		}
+	}    
 }
 
 void DC_Motor_init(){
@@ -104,7 +195,7 @@ void DC_Motor_init(){
 	SETUP_PWMCLK;
 	SETUP_PWMPOL;
 	SETUP_PWMCAE;
-	SETUP_PWME;
+	
 	
 	SETUP_MR_PWMCNT;
 	SETUP_MR_PWMPER;
@@ -113,36 +204,84 @@ void DC_Motor_init(){
 	SETUP_ML_PWMCNT;
 	SETUP_ML_PWMPER;
 	SETUP_ML_DUTY;
+	
+	SETUP_PWME;
 }
 
-void RMotorEncoder()
+void RMotorPI()
   {
-    //signed long int localRMotorPeriod = 0; 
-
-    
     DisableInterrupts;
-    localRMotorPeriod = RMotorPeriod;
+    RMotorLocalPeriod = RMotorPeriod;
     EnableInterrupts;
     
-    REncoderFrequency = ECLOCK / (localRMotorPeriod * MOTORPRESCALER);
+    REncoderFrequency = ECLOCK / (RMotorLocalPeriod * MOTORPRESCALER);
     REncoderSpeed = ((REncoderFrequency * 100) / NUMENCODERVANES);
     RMotorFrequency = ((REncoderSpeed * 100) / GEARRATIO);
-    RMotorSpeed = ((PI * RWHEELDIAMETER * RMotorFrequency)/100000); 
-      
+    RMotorSpeed = ((PI * RWHEELDIAMETER * RMotorFrequency)/100000);
+    
+   Rerror = (RMotorSetPoint - RMotorSpeed);
+   
+   RpTerm = (RpGain * Rerror);
+   
+   RiState = (RiState + Rerror);
+   if (RiState > RiMax)
+    {
+      RiState = RiMax;     
+    }
+   else if ( RiState < RiMin)
+    {
+      RiState = RiMin; 
+    }
+   RiTerm = (RiGain * RiState); 
+   //dTerm = (dGain * (position - dState));
+   //dState = position; 
+   
+   //assign duty with (pTerm+iTerm - dTerm)
+   
+    
+    RtempPWMDuty = ((((RpTerm + RiTerm) * 100)/21)/10); 
+    MOTOR_R_DUTY = RtempPWMDuty;
+  
+  
+  
   }
-  
-void LMotorEncoder()
+void LMotorPI()
   {
-  
     DisableInterrupts;
-    localLMotorPeriod = LMotorPeriod;
+    LMotorLocalPeriod = LMotorPeriod;
     EnableInterrupts;
     
-    LEncoderFrequency = ECLOCK / (localLMotorPeriod * MOTORPRESCALER);
+      
+    LEncoderFrequency = ECLOCK / (LMotorLocalPeriod * MOTORPRESCALER);
     LEncoderSpeed = ((LEncoderFrequency * 100) / NUMENCODERVANES);
     LMotorFrequency = ((LEncoderSpeed * 100) / GEARRATIO);
-    LMotorSpeed = ((PI * LWHEELDIAMETER * LMotorFrequency)/100000); 
-      
-
-  }
+    LMotorSpeed = ((PI * LWHEELDIAMETER * LMotorFrequency)/100000);
+    
+   Lerror = (LMotorSetPoint - LMotorSpeed);
+   
+   LpTerm = (LpGain * Lerror);
+   
+   LiState = (LiState + Lerror);
+   if (LiState > LiMax)
+    {
+      LiState = LiMax;     
+    }
+   else if ( LiState < LiMin)
+    {
+      LiState = LiMin; 
+    }
+   LiTerm = (LiGain * LiState); 
+   //dTerm = (dGain * (position - dState));
+   //dState = position; 
+   
+   //assign duty with (pTerm+iTerm - dTerm)
+   
+    
+    LtempPWMDuty = ((((LpTerm + LiTerm) * 100)/21)/10); 
+    MOTOR_L_DUTY = LtempPWMDuty;
   
+  
+  
+  
+  
+  }

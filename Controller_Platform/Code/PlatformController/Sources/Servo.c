@@ -66,6 +66,10 @@ void configureTimer(void)
   MAKE_CHNL_IC(0);
   MAKE_CHNL_IC(1);
   
+   //Force OC to known state
+  FORCE_OC_ACTION_NOW(2,OC_GO_HI); 
+  Edge = RISING;  
+  
   //DC motors use these
   //TCTL3 = TCTL3RiseEdgeCapture;
   //TCTL4 = TCTL4RiseEdgeCapture;
@@ -73,20 +77,17 @@ void configureTimer(void)
   //makes channels 3 & 4 input capture  
 
   //Enable interupts for channel 02
-  SET_BITS(TIE,0b00000111);
-
-  //Force OC to known state
-  FORCE_OC_ACTION_NOW(2,OC_GO_HI); 
-  Edge = RISING;
+  SET_BITS(TIE,0b00000111); 
 
   //Delay before actual comparison occurs
   TC2 = (PERIODTICKS + TCNT);
 
   //Clear Pending Flags
-  TFLG1 = TFLG1_C2F_MASK; //Might not be needed
+  //TFLG1 = TFLG1_C2F_MASK; //Might not be needed
 
   //Toggle on OC
   SET_OC_ACTION(2,OC_TOGGLE);
+ 
   //Get current timer count
   TC2 = TCNT;  
 }

@@ -41,7 +41,58 @@ unsigned int limitswitches;
 unsigned int volatile stepCount;
 unsigned char tempCamHome[6] = "C 1 0";
 
+//Globals for DC motor Speed calculations
+signed int volatile firstEdgeFlagR = 0;
+signed int volatile firstEdgeFlagL = 0;
+signed int volatile secondEdgeFlagR = 0;
+signed int volatile secondEdgeFlagL = 0;
+signed int volatile firstEdgeR = 0;
+signed int volatile firstEdgeL = 0;
+signed int volatile secondEdgeR = 0;
+signed int volatile secondEdgeL = 0;
+signed int volatile RMotorPeriod = 0;
+signed int volatile LMotorPeriod = 0;
+signed long int volatile RMotorFrequency = 0;
+signed long int volatile LMotorFrequency = 0;
+signed long int volatile RMotorSpeed = 0;
+signed long int volatile LMotorSpeed = 0;
+signed int volatile interruptCountR = 0;
+signed int volatile interruptCountL = 0;
+//signed char volatile RMotorOverflow = 0;
+//signed char volatile LMotorOverflow = 0;
+signed long int volatile REncoderSpeed = 0;
+signed long int volatile LEncoderSpeed = 0;
+//signed long int volatile localRMotorPeriod = 0;
+//signed long int volatile localLMotorPeriod = 0;
+signed long int volatile REncoderFrequency = 0;
+signed long int volatile LEncoderFrequency = 0;
+signed int volatile RMotorSetPoint = 0;
+signed int volatile LMotorSetPoint = 0;
 
+//Globals for PID Control
+//signed int volatile dState;
+/*signed long int volatile RiState;
+signed long int volatile LiState;
+signed int volatile RiMax = 390;
+signed int volatile RiMin = -390;
+signed int volatile RiGain = 1;
+signed int volatile RpGain = 1;
+signed int volatile LiMax = 390;
+signed int volatile LiMin = -390;
+signed int volatile LiGain = 1;
+signed int volatile LpGain = 1;
+//signed int volatile dGain;
+//signed int volatile error;
+//signed int volatile position;
+signed long int volatile RpTerm;
+signed long int volatile LpTerm;
+//signed int volatile dTerm;
+signed long int volatile RiTerm;
+signed long int volatile LiTerm;
+signed long int volatile Rerror;
+signed long int volatile Lerror;
+signed long long int volatile RtempPWMDuty;
+signed long long int volatile LtempPWMDuty;*/
 
 void main(void)
 {
@@ -76,88 +127,91 @@ void main(void)
   EnableInterrupts;
   
   // home camera
-  //homeCam(tempCamHome); 
+  homeCam(tempCamHome); 
   
   
   //infinite for loop
   for (;;)
   {
-    while (myMessageFlag == 0); //busy wait inbetween instructions. 
-    
-    //critical region
-    DisableInterrupts;
-    instructOffset = instructStart;
-    for (i = 0; i < 5; i++) //change back for full command
-    {
-       fullInstruction[i] = instructBuffer[instructOffset]; //copy instruction
-       instructOffset++;
-    }
-    //instructSize = (instructEnd - instructStart);
-    myMessageFlag = 0;
-    EnableInterrupts;
-    //*buffPtr = fullInstruction[0];
-    
-    //determine who the instruction is for based on first character 
-    switch(fullInstruction[0])
-    {
-      case 'R':
-      setDCMotorSpeed(fullInstruction);
-      echo(fullInstruction);
-      break;
-      case 'L':
-      setDCMotorSpeed(fullInstruction);
-      echo(fullInstruction);
-      break;
-      case 'S':
-      changeStep(fullInstruction);
-      echo(fullInstruction);
-      break;
-      case 'O':
-      setPulseWidth(fullInstruction);
-      echo(fullInstruction);
-      break;
-      case 'C':
-      homeCam(fullInstruction);
-      echo(fullInstruction);
-      break;      
-      case 'A':
-      //function call
-      echo(fullInstruction);
-      break;
-      case 'B':
-      //function call
-      echo(fullInstruction);
-      break;
-      case 'D':
-      //function call
-      echo(fullInstruction);
-      break;
-      case 'E':
-      //function call
-      echo(fullInstruction);
-      break;
-      case 'F':
-      //function call
-      echo(fullInstruction);
-      break;
-      case 'G':
-      //function call
-      echo(fullInstruction);
-      break;
-      case 'H':
-      //function call
-      echo(fullInstruction);
-      break;
-      case 'I':
-      //function call
-      echo(fullInstruction);
-      break;
-      case 'P':
-      echo(fullInstruction); //temp for debugging
-      break;
-      default:
-      echo(errorMessage);  
-    }
+     LMotorPI();
+     RMotorPI();
+         
+    if (myMessageFlag == 1)
+      {         
+        //critical region
+        DisableInterrupts;
+        instructOffset = instructStart;
+        for (i = 0; i < 5; i++) //change back for full command
+        {
+           fullInstruction[i] = instructBuffer[instructOffset]; //copy instruction
+           instructOffset++;
+        }
+        //instructSize = (instructEnd - instructStart);
+        myMessageFlag = 0;
+        EnableInterrupts;
+        
+        //determine who the instruction is for based on first character 
+        switch(fullInstruction[0])
+        {
+          case 'R':
+          setDCMotorSpeed(fullInstruction);
+          echo(fullInstruction);
+          break;
+          case 'L':
+          setDCMotorSpeed(fullInstruction);
+          echo(fullInstruction);
+          break;
+          case 'S':
+          changeStep(fullInstruction);
+          echo(fullInstruction);
+          break;
+          case 'O':
+          setPulseWidth(fullInstruction);
+          echo(fullInstruction);
+          break;
+          case 'C':
+          homeCam(fullInstruction);
+          echo(fullInstruction);
+          break;      
+          case 'A':
+          //function call
+          echo(fullInstruction);
+          break;
+          case 'B':
+          //function call
+          echo(fullInstruction);
+          break;
+          case 'D':
+          //function call
+          echo(fullInstruction);
+          break;
+          case 'E':
+          //function call
+          echo(fullInstruction);
+          break;
+          case 'F':
+          //function call
+          echo(fullInstruction);
+          break;
+          case 'G':
+          //function call
+          echo(fullInstruction);
+          break;
+          case 'H':
+          //function call
+          echo(fullInstruction);
+          break;
+          case 'I':
+          //function call
+          echo(fullInstruction);
+          break;
+          case 'P':
+          echo(fullInstruction); //temp for debugging
+          break;
+          default:
+          echo(errorMessage);  
+        }
+    }    
   }
 }
 
@@ -174,6 +228,8 @@ interrupt 20 void receiveInstruction() //correct interrupt vector?
    flagValue = SCISR1 | RECEIVE_FULL_FLAG_MASK;  //How to read leave flags untouched??
   
    instructBuffer[receivePosition] = SCIDRL;
+   
+      
    if (instructBuffer[receivePosition] == '~') //found start character
    {
     instructStart = (receivePosition+2); //offset into ring buffer for start of instruction
@@ -182,6 +238,7 @@ interrupt 20 void receiveInstruction() //correct interrupt vector?
    {
     instructEnd = (receivePosition-2); //offset into ring buffer for end of command
     myMessageFlag = 1;
+    
    }
    receivePosition = ((receivePosition + 1) % (INSTRUCT_BUFF_SIZE)); //ring buffer
    
@@ -190,7 +247,8 @@ interrupt 20 void receiveInstruction() //correct interrupt vector?
 //LED flashing code for debug purposes=================================================================
   CRGFLG = CRGFLG_RTIF_MASK; 
   
-  if (--countDown == 0){                    // count this interupt -- if counted down to 0, toggle LEDs
+  if (--countDown == 0){
+                                // count this interupt -- if counted down to 0, toggle LEDs
             countDown = DOWN_COUNT_VALUE;       // reset downcounter
             PTS ^= LED_BITS_MASK;               // toggle LEDs
       }
@@ -213,12 +271,12 @@ interrupt 10 void servoMovement(void)
   // If direction up and not at up limit: move servo up
   if ((servoDirection == '1') && (pulseWidth <= 2350))
   {
-    pulseWidth += 5;
+    pulseWidth -= 5;
   }
   // If direction down and not at down limit: move servo down
   else if ((servoDirection == '2') && (pulseWidth >= 1300))
   {
-    pulseWidth -= 5;
+    pulseWidth += 5;
   }
  
   if (Edge == RISING)
@@ -243,7 +301,9 @@ enter function description
 ================================================================================================*/
   interrupt 7 void stepperMovement(void)
   {
-     unsigned int newIndex; 
+     unsigned int newIndex;
+     //if (stepsize != 0)
+      //{         
       
      CRGFLG = 0b10000000;    //clear any possibly pending interrupts
      
@@ -268,6 +328,7 @@ enter function description
      lastIndex = newIndex;  // update lastIndex
      
      FORCE_BITS(PTT, TOP4BITS, (lookup[newIndex]));
+      //}
   
   }
 /*=====================Right DC Motor Speed interrupt handler===================================
@@ -278,7 +339,8 @@ Inputs -
 Outputs - 
 =======================================================================================*/  
   interrupt 8 void rightDCMotorSpeed(void)
-    { 
+    {
+       
       
       if (firstEdgeFlagR == 0)
         {
@@ -310,7 +372,9 @@ Outputs -
         }   
         
       firstEdgeR = secondEdgeR;
-      interruptCountR = 0;      
+      interruptCountR = 0;
+      
+          
          
     }
     
@@ -354,8 +418,8 @@ Outputs -
         }   
         
       firstEdgeL = secondEdgeL;
-      interruptCountL = 0;      
-         
+      interruptCountL = 0;   
+    
     }
     
 /*=====================Timer Overflow interrupt handler===================================
@@ -384,6 +448,7 @@ void homeCam(unsigned char *instruction)
   LCDprintf("Homing Cam");
   
   pulseWidth = 1500;
+  
   
   if (instruction[2] == '1') 
   {

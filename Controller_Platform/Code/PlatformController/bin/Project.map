@@ -1,5 +1,5 @@
 *** EVALUATION ***
-PROGRAM "C:\Users\rfurry3774\Desktop\GitHub\ESE_PROJECT\Controller_Platform\Code\PlatformController\bin\Project.abs"
+PROGRAM "C:\Users\rfurry3774\Desktop\PlatformController\bin\Project.abs"
 
 *********************************************************************************************
 TARGET SECTION
@@ -31,8 +31,8 @@ Entry point: 0xC029 (_Startup)
 _startupData is allocated at 0xC031 and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
-  _Range   pZeroOut       0x900     81
-  _Copy    *toCopyDownBeg 0xCE13
+  _Range   pZeroOut       0x900     169
+  _Copy    *toCopyDownBeg 0xD177
 } _startupData;
 
 *********************************************************************************************
@@ -42,11 +42,11 @@ Section Name                    Size  Type     From       To       Segment
 .init                             49     R     0xC000     0xC030   ROM_C000
 .startData                        10     R     0xC031     0xC03A   ROM_C000
 .rodata                          116     R     0xC03B     0xC0AE   ROM_C000
-.rodata1                         166     R     0xC0AF     0xC154   ROM_C000
-.text                           3102     R     0xC155     0xCD72   ROM_C000
-.copy                             18     R     0xCE13     0xCE24   ROM_C000
+.rodata1                         212     R     0xC0AF     0xC182   ROM_C000
+.text                           3638     R     0xC183     0xCFB8   ROM_C000
+.copy                             41     R     0xD177     0xD19F   ROM_C000
 .stack                           256   R/W      0x800      0x8FF   RAM
-.data                             13   R/W      0x900      0x90C   RAM
+.data                             35   R/W      0x900      0x922   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
 .abs_section_a                     1   N/I        0xA        0xA   .absSeg2
@@ -274,14 +274,14 @@ Section Name                    Size  Type     From       To       Segment
 .abs_section_ffee                  2     R     0xFFEE     0xFFEF   .absSeg224
 .abs_section_ffec                  2     R     0xFFEC     0xFFED   .absSeg225
 .abs_section_ffde                  2     R     0xFFDE     0xFFDF   .absSeg226
-.bss                              50   R/W      0x90D      0x93E   RAM
-.common                           18   R/W      0x93F      0x950   RAM
-RUNTIME                          160     R     0xCD73     0xCE12   ROM_C000
+.bss                             110   R/W      0x923      0x990   RAM
+.common                           24   R/W      0x991      0x9A8   RAM
+RUNTIME                          446     R     0xCFB9     0xD176   ROM_C000
 .vectSeg227_vect                   2     R     0xFFFE     0xFFFF   .vectSeg227
 
 Summary of section sizes per section type:
-READ_ONLY (R):         E33 (dec:     3635)
-READ_WRITE (R/W):      151 (dec:      337)
+READ_ONLY (R):        11AE (dec:     4526)
+READ_WRITE (R/W):      1A9 (dec:      425)
 NO_INIT (N/I):         104 (dec:      260)
 
 *********************************************************************************************
@@ -344,7 +344,7 @@ MODULE:                 -- mc9s12c32.c.o --
      _TCTL4                                      4B       1       1       1   .abs_section_4b
      _TIE                                        4C       1       1       1   .abs_section_4c
      _TSCR2                                      4D       1       1       1   .abs_section_4d
-     _TFLG1                                      4E       1       1       2   .abs_section_4e
+     _TFLG1                                      4E       1       1       1   .abs_section_4e
      _TFLG2                                      4F       1       1       0   .abs_section_4f
      _PACTL                                      60       1       1       0   .abs_section_60
      _PAFLG                                      61       1       1       0   .abs_section_61
@@ -369,7 +369,7 @@ MODULE:                 -- mc9s12c32.c.o --
      _PWMCLK                                     E2       1       1       2   .abs_section_e2
      _PWMPRCLK                                   E3       1       1       2   .abs_section_e3
      _PWMCAE                                     E4       1       1       1   .abs_section_e4
-     _PWMCTL                                     E5       1       1       2   .abs_section_e5
+     _PWMCTL                                     E5       1       1       1   .abs_section_e5
      _PWMSCLA                                    E8       1       1       0   .abs_section_e8
      _PWMSCLB                                    E9       1       1       0   .abs_section_e9
      _PWMSDN                                     FE       1       1       0   .abs_section_fe
@@ -487,8 +487,8 @@ MODULE:                 -- mc9s12c32.c.o --
      _DBGCA                                      2B       2       2       0   .abs_section_2b
      _DBGCB                                      2E       2       2       0   .abs_section_2e
      _TCNT                                       44       2       2       4   .abs_section_44
-     _TC0                                        50       2       2       3   .abs_section_50
-     _TC1                                        52       2       2       3   .abs_section_52
+     _TC0                                        50       2       2       2   .abs_section_50
+     _TC1                                        52       2       2       2   .abs_section_52
      _TC2                                        54       2       2       6   .abs_section_54
      _TC3                                        56       2       2       3   .abs_section_56
      _TC4                                        58       2       2       0   .abs_section_58
@@ -515,31 +515,52 @@ MODULE:                 -- mc9s12c32.c.o --
      _PWMPER45                                   F6       2       2       2   .abs_section_f6
      _PWMDTY01                                   F8       2       2       0   .abs_section_f8
      _PWMDTY23                                   FA       2       2       0   .abs_section_fa
-     _PWMDTY45                                   FC       2       2       4   .abs_section_fc
+     _PWMDTY45                                   FC       2       2       8   .abs_section_fc
      _CANRXTSR                                  16E       2       2       0   .abs_section_16e
      _CANTXTSR                                  17E       2       2       0   .abs_section_17e
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     main                                      C155      DC     220       2   .text       
-     receiveInstruction                        C231      62      98       1   .text       
-     servoMovement                             C293      58      88       1   .text       
-     stepperMovement                           C2EB      54      84       1   .text       
-     rightDCMotorSpeed                         C33F      ED     237       4   .text       
-     leftDCMotorSpeed                          C42C      ED     237       4   .text       
-     OverFlowISR                               C519      21      33       1   .text       
-     homeCam                                   C53A      68     104       1   .text       
+     main                                      C183      EC     236       3   .text       
+     receiveInstruction                        C26F      62      98       1   .text       
+     servoMovement                             C2D1      58      88       1   .text       
+     stepperMovement                           C329      54      84       1   .text       
+     rightDCMotorSpeed                         C37D      75     117       1   .text       
+     leftDCMotorSpeed                          C3F2      75     117       1   .text       
+     OverFlowISR                               C467      11      17       1   .text       
+     homeCam                                   C478      68     104       2   .text       
 - VARIABLES:
      STRING.Homing.Cam.5                       C0AF       B      11       1   .rodata1    
      STRING.Done.HomeCam.6                     C0BA       D      13       1   .rodata1    
-     countDown.4                                900       2       2       3   .data       
+     tempCamHome                                900       6       6       1   .data       
+     countDown.4                                906       2       2       3   .data       
+     firstEdgeFlagR                             923       2       2       3   .bss        
+     firstEdgeFlagL                             925       2       2       3   .bss        
+     firstEdgeR                                 927       2       2       7   .bss        
+     firstEdgeL                                 929       2       2       7   .bss        
+     secondEdgeR                                92B       2       2       7   .bss        
+     secondEdgeL                                92D       2       2       7   .bss        
+     RMotorPeriod                               92F       2       2       3   .bss        
+     LMotorPeriod                               931       2       2       3   .bss        
+     RMotorFrequency                            933       4       4       4   .bss        
+     LMotorFrequency                            937       4       4       4   .bss        
+     RMotorSpeed                                93B       4       4       5   .bss        
+     LMotorSpeed                                93F       4       4       5   .bss        
+     interruptCountR                            943       2       2       8   .bss        
+     interruptCountL                            945       2       2       8   .bss        
+     REncoderSpeed                              947       4       4       4   .bss        
+     LEncoderSpeed                              94B       4       4       4   .bss        
+     REncoderFrequency                          94F       4       4       4   .bss        
+     LEncoderFrequency                          953       4       4       4   .bss        
+     RMotorSetPoint                             957       2       2       4   .bss        
+     LMotorSetPoint                             959       2       2       4   .bss        
      _Vector_20                                FFD6       2       2       0   .abs_section_ffd6
      _Vector_10                                FFEA       2       2       0   .abs_section_ffea
      _Vector_7                                 FFF0       2       2       0   .abs_section_fff0
      _Vector_8                                 FFEE       2       2       0   .abs_section_ffee
      _Vector_9                                 FFEC       2       2       0   .abs_section_ffec
      _Vector_16                                FFDE       2       2       0   .abs_section_ffde
-     limitswitches                              93F       2       2       5   .common     
-     stepCount                                  941       2       2       6   .common     
+     limitswitches                              991       2       2       5   .common     
+     stepCount                                  993       2       2       6   .common     
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
      Init                                      C000      29      41       1   .init       
@@ -550,117 +571,134 @@ MODULE:                 -- Start12.c.o --
      __SEG_END_SSTACK                           900       0       0       1               
 MODULE:                 -- PRINTF.C.o (ansisi.lib) --
 - PROCEDURES:
-     vprintf                                   C5A2     478    1144      49   .text       
-     _out                                      CA1A       C      12       9   .text       
-     deposit_char                              CA26       F      15       1   .text       
-     vsprintf                                  CA35      29      41       1   .text       
+     vprintf                                   C4E0     478    1144      49   .text       
+     _out                                      C958       C      12       9   .text       
+     deposit_char                              C964       F      15       1   .text       
+     vsprintf                                  C973      29      41       1   .text       
 - VARIABLES:
      pow10                                     C03B      28      40       4   .rodata     
      pow16                                     C063      20      32       4   .rodata     
      pow8                                      C083      2C      44       4   .rodata     
-     pbuf                                       90D       6       6      15   .bss        
+     pbuf                                       95B       6       6      15   .bss        
 MODULE:                 -- STRING.C.o (ansisi.lib) --
 - PROCEDURES:
-     strlen                                    CA5E      14      20       1   .text       
+     strlen                                    C99C      14      20       1   .text       
 - VARIABLES:
 MODULE:                 -- rtshc12.c.o (ansisi.lib) --
 - PROCEDURES:
-     _LCMP                                     CD73      19      25       4   RUNTIME     
-     _LCMP_P                                   CD8C      15      21       3   RUNTIME     
-     _LNEG                                     CDA1       D      13       1   RUNTIME     
-     _LINC                                     CDAE       5       5       2   RUNTIME     
-     _LMULU16x32                               CDB3       F      15       2   RUNTIME     
-     _ILSEXT                                   CDC2       7       7       2   RUNTIME     
-     _CASE_DIRECT_BYTE                         CDC9       5       5       1   RUNTIME     
-     _CASE_CHECKED_BYTE                        CDCE      14      20       1   RUNTIME     
-     _CASE_SEARCH_8                            CDE2      17      23       1   RUNTIME     
-     _CASE_SEARCH_8_BYTE                       CDF9      1A      26       1   RUNTIME     
+     _LSHL                                     CFB9      11      17       2   RUNTIME     
+     _LCMP                                     CFCA      19      25       2   RUNTIME     
+     _LCMP_P                                   CFE3      15      21       3   RUNTIME     
+     _LNEG                                     CFF8       D      13       2   RUNTIME     
+     _LMULS16x32                               D005      1F      31      12   RUNTIME     
+     _lDivMod                                  D024      BE     190       2   RUNTIME     
+     _NEG_P                                    D0E2       F      15       4   RUNTIME     
+     _LDIVS                                    D0F1      35      53       6   RUNTIME     
+     _ILSEXT                                   D126       7       7      10   RUNTIME     
+     _CASE_DIRECT_BYTE                         D12D       5       5       1   RUNTIME     
+     _CASE_CHECKED_BYTE                        D132      14      20       1   RUNTIME     
+     _CASE_SEARCH_8                            D146      17      23       1   RUNTIME     
+     _CASE_SEARCH_8_BYTE                       D15D      1A      26       1   RUNTIME     
 - VARIABLES:
 MODULE:                 -- DC Motor.c.o --
 - PROCEDURES:
-     setDCMotorSpeed                           CA72      9F     159       1   .text       
-     DC_Motor_init                             CB11      34      52       1   .text       
+     setDCMotorSpeed                           C9B0     14F     335       7   .text       
+     DC_Motor_init                             CAFF      30      48       1   .text       
+     RMotorPI                                  CB2F     130     304       3   .text       
+     LMotorPI                                  CC5F     130     304       3   .text       
 - VARIABLES:
      STRING.L.Motor.For.1                      C0C7       C      12       1   .rodata1    
-     STRING.L.Motor.Back.2                     C0D3       D      13       1   .rodata1    
-     STRING.L.Motor.Stop.3                     C0E0       D      13       1   .rodata1    
-     STRING.R.Motor.For.4                      C0ED       C      12       1   .rodata1    
-     STRING.R.Motor.Back.5                     C0F9       D      13       1   .rodata1    
-     STRING.R.Motor.Stop.6                     C106       D      13       1   .rodata1    
-     firstEdgeFlagR                             913       2       2       3   .bss        
-     firstEdgeFlagL                             915       2       2       3   .bss        
-     firstEdgeR                                 917       4       4      16   .bss        
-     firstEdgeL                                 91B       4       4      16   .bss        
-     secondEdgeR                                91F       4       4      15   .bss        
-     secondEdgeL                                923       4       4      15   .bss        
-     RMotorPeriod                               927       4       4       4   .bss        
-     LMotorPeriod                               92B       4       4       4   .bss        
-     interruptCountR                            92F       4       4      10   .bss        
-     interruptCountL                            933       4       4      10   .bss        
-     leftmotorduty                              943       1       1       1   .common     
-     rightmotorduty                             944       1       1       1   .common     
+     STRING.L.Motor.For.2                      C0D3       C      12       1   .rodata1    
+     STRING.L.Motor.For.3                      C0DF       C      12       1   .rodata1    
+     STRING.L.Motor.For.4                      C0EB       C      12       1   .rodata1    
+     STRING.L.Motor.Stop.5                     C0F7       D      13       1   .rodata1    
+     STRING.L.Motor.For.6                      C104       C      12       1   .rodata1    
+     STRING.L.Motor.For.7                      C110       C      12       1   .rodata1    
+     STRING.L.Motor.For.8                      C11C       C      12       1   .rodata1    
+     STRING.L.Motor.For.9                      C128       C      12       1   .rodata1    
+     STRING.L.Motor.Stop.10                    C134       D      13       1   .rodata1    
+     RiMax                                      908       2       2       2   .data       
+     RiMin                                      90A       2       2       2   .data       
+     RiGain                                     90C       2       2       1   .data       
+     RpGain                                     90E       2       2       1   .data       
+     LiMax                                      910       2       2       2   .data       
+     LiMin                                      912       2       2       2   .data       
+     LiGain                                     914       2       2       1   .data       
+     LpGain                                     916       2       2       1   .data       
+     RMotorLocalPeriod                          961       4       4       3   .bss        
+     LMotorLocalPeriod                          965       4       4       3   .bss        
+     RpTerm                                     969       4       4       4   .bss        
+     LpTerm                                     96D       4       4       4   .bss        
+     RiTerm                                     971       4       4       5   .bss        
+     LiTerm                                     975       4       4       5   .bss        
+     Rerror                                     979       4       4       7   .bss        
+     Lerror                                     97D       4       4       7   .bss        
+     RtempPWMDuty                               981       4       4       3   .bss        
+     LtempPWMDuty                               985       4       4       3   .bss        
+     RiState                                    995       4       4      10   .common     
+     LiState                                    999       4       4      10   .common     
 MODULE:                 -- LCD.c.o --
 - PROCEDURES:
-     msDelay                                   CB45      2E      46       4   .text       
-     LCDputc                                   CB73       3       3       1   .text       
-     LCDputs                                   CB76       F      15       1   .text       
-     LCDprintf                                 CB85      1C      28       7   .text       
-     LCDinit                                   CBA1      59      89       1   .text       
-     LCDclear                                  CBFA       5       5      11   .text       
-     LCDcmd                                    CBFF      37      55       5   .text       
-     LCDdata                                   CC36      37      55       1   .text       
+     msDelay                                   CD8F      2E      46       4   .text       
+     LCDputc                                   CDBD       3       3       1   .text       
+     LCDputs                                   CDC0       F      15       1   .text       
+     LCDprintf                                 CDCF      1C      28      11   .text       
+     LCDinit                                   CDEB      59      89       1   .text       
+     LCDclear                                  CE44       5       5      18   .text       
+     LCDcmd                                    CE49      37      55       5   .text       
+     LCDdata                                   CE80      37      55       1   .text       
 - VARIABLES:
 MODULE:                 -- SCI.c.o --
 - PROCEDURES:
-     initSCI                                   CC6D       F      15       1   .text       
-     echo                                      CC7C       3       3       1   .text       
-     putsSCI                                   CC7F      21      33       1   .text       
-     putcSCI                                   CCA0       9       9       1   .text       
+     initSCI                                   CEB7       F      15       1   .text       
+     echo                                      CEC6       3       3       1   .text       
+     putsSCI                                   CEC9      21      33       1   .text       
+     putcSCI                                   CEEA       9       9       1   .text       
 - VARIABLES:
-     myMessageFlag                              902       1       1       3   .data       
-     receivePosition                            937       2       2       7   .bss        
-     instructStart                              939       1       1       2   .bss        
-     instructEnd                                93A       1       1       1   .bss        
-     instructBuffer                             945       9       9       4   .common     
+     myMessageFlag                              918       1       1       3   .data       
+     receivePosition                            989       2       2       7   .bss        
+     instructStart                              98B       1       1       2   .bss        
+     instructEnd                                98C       1       1       1   .bss        
+     instructBuffer                             99D       9       9       4   .common     
 MODULE:                 -- Servo.c.o --
 - PROCEDURES:
-     setPulseWidth                             CCA9      2A      42       1   .text       
-     configureTimer                            CCD3      3E      62       1   .text       
+     setPulseWidth                             CEF3      2A      42       1   .text       
+     configureTimer                            CF1D      3A      58       1   .text       
 - VARIABLES:
-     STRING.Servo.Dir..DOWN.1                  C113      10      16       1   .rodata1    
-     STRING.Servo.Dir..UP..2                   C123       F      15       1   .rodata1    
-     pulseWidth                                 903       2       2       7   .data       
-     ISRPulseWidth                              93B       2       2       4   .bss        
-     Edge                                       93D       1       1       4   .bss        
-     servoDirection                             93E       1       1       3   .bss        
+     STRING.Servo.Dir..DOWN.1                  C141      10      16       1   .rodata1    
+     STRING.Servo.Dir..UP..2                   C151       F      15       1   .rodata1    
+     pulseWidth                                 919       2       2       7   .data       
+     ISRPulseWidth                              98D       2       2       4   .bss        
+     Edge                                       98F       1       1       4   .bss        
+     servoDirection                             990       1       1       3   .bss        
 MODULE:                 -- Stepper.c.o --
 - PROCEDURES:
-     stepperInit                               CD11      23      35       1   .text       
-     changeStep                                CD34      3F      63       1   .text       
+     stepperInit                               CF57      23      35       1   .text       
+     changeStep                                CF7A      3F      63       1   .text       
 - VARIABLES:
-     STRING.stepper.init.1                     C132       D      13       1   .rodata1    
-     STRING.STEPPER..R.2                       C13F       B      11       1   .rodata1    
-     STRING.STEPPER..L.3                       C14A       B      11       1   .rodata1    
-     lookup                                     905       8       8       1   .data       
-     stepsize                                   94E       1       1      16   .common     
-     lastIndex                                  94F       2       2       3   .common     
+     STRING.stepper.init.1                     C160       D      13       1   .rodata1    
+     STRING.STEPPER..R.2                       C16D       B      11       1   .rodata1    
+     STRING.STEPPER..L.3                       C178       B      11       1   .rodata1    
+     lookup                                     91B       8       8       1   .data       
+     stepsize                                   9A6       1       1      16   .common     
+     lastIndex                                  9A7       2       2       3   .common     
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12c32.c.o                              260      0      0
-  main.c.o                                     6   1101     36
+  main.c.o                                    68    861     36
   Start12.c.o                                  0     49      0
   PRINTF.C.o (ansisi.lib)                      6   1212    116
   STRING.C.o (ansisi.lib)                      0     20      0
-  rtshc12.c.o (ansisi.lib)                     0    160      0
-  DC Motor.c.o                                38    211     76
+  rtshc12.c.o (ansisi.lib)                     0    446      0
+  DC Motor.c.o                                64    991    122
   LCD.c.o                                      0    296      0
   SCI.c.o                                     14     60      0
-  Servo.c.o                                    6    104     31
+  Servo.c.o                                    6    100     31
   Stepper.c.o                                 11     98     35
-  other                                      256     12     18
+  other                                      256     12     41
 
 *********************************************************************************************
 SECTION USE IN OBJECT-ALLOCATION SECTION
@@ -668,25 +706,31 @@ SECTION USE IN OBJECT-ALLOCATION SECTION
 SECTION: ".text"
   main receiveInstruction servoMovement stepperMovement rightDCMotorSpeed 
   leftDCMotorSpeed OverFlowISR homeCam vprintf _out deposit_char vsprintf 
-  strlen setDCMotorSpeed DC_Motor_init msDelay LCDputc LCDputs LCDprintf 
-  LCDinit LCDclear LCDcmd LCDdata initSCI echo putsSCI putcSCI setPulseWidth 
-  configureTimer stepperInit changeStep 
+  strlen setDCMotorSpeed DC_Motor_init RMotorPI LMotorPI msDelay LCDputc 
+  LCDputs LCDprintf LCDinit LCDclear LCDcmd LCDdata initSCI echo putsSCI 
+  putcSCI setPulseWidth configureTimer stepperInit changeStep 
 SECTION: ".data"
-  countDown.4 myMessageFlag pulseWidth lookup 
+  tempCamHome countDown.4 RiMax RiMin RiGain RpGain LiMax LiMin LiGain LpGain 
+  myMessageFlag pulseWidth lookup 
 SECTION: ".bss"
-  pbuf firstEdgeFlagR firstEdgeFlagL firstEdgeR firstEdgeL secondEdgeR 
-  secondEdgeL RMotorPeriod LMotorPeriod interruptCountR interruptCountL 
-  receivePosition instructStart instructEnd ISRPulseWidth Edge servoDirection 
+  firstEdgeFlagR firstEdgeFlagL firstEdgeR firstEdgeL secondEdgeR secondEdgeL 
+  RMotorPeriod LMotorPeriod RMotorFrequency LMotorFrequency RMotorSpeed 
+  LMotorSpeed interruptCountR interruptCountL REncoderSpeed LEncoderSpeed 
+  REncoderFrequency LEncoderFrequency RMotorSetPoint LMotorSetPoint pbuf 
+  RMotorLocalPeriod LMotorLocalPeriod RpTerm LpTerm RiTerm LiTerm Rerror Lerror 
+  RtempPWMDuty LtempPWMDuty receivePosition instructStart instructEnd 
+  ISRPulseWidth Edge servoDirection 
 SECTION: ".init"
   Init _Startup 
 SECTION: ".rodata"
   pow10 pow16 pow8 
 SECTION: ".rodata1"
   STRING.Homing.Cam.5 STRING.Done.HomeCam.6 STRING.L.Motor.For.1 
-  STRING.L.Motor.Back.2 STRING.L.Motor.Stop.3 STRING.R.Motor.For.4 
-  STRING.R.Motor.Back.5 STRING.R.Motor.Stop.6 STRING.Servo.Dir..DOWN.1 
-  STRING.Servo.Dir..UP..2 STRING.stepper.init.1 STRING.STEPPER..R.2 
-  STRING.STEPPER..L.3 
+  STRING.L.Motor.For.2 STRING.L.Motor.For.3 STRING.L.Motor.For.4 
+  STRING.L.Motor.Stop.5 STRING.L.Motor.For.6 STRING.L.Motor.For.7 
+  STRING.L.Motor.For.8 STRING.L.Motor.For.9 STRING.L.Motor.Stop.10 
+  STRING.Servo.Dir..DOWN.1 STRING.Servo.Dir..UP..2 STRING.stepper.init.1 
+  STRING.STEPPER..R.2 STRING.STEPPER..L.3 
 SECTION: ".abs_section_8"
   _PORTE 
 SECTION: ".abs_section_9"
@@ -1142,11 +1186,10 @@ SECTION: ".abs_section_ffec"
 SECTION: ".abs_section_ffde"
   _Vector_16 
 SECTION: ".common"
-  limitswitches stepCount leftmotorduty rightmotorduty instructBuffer stepsize 
-  lastIndex 
+  limitswitches stepCount RiState LiState instructBuffer stepsize lastIndex 
 SECTION: "RUNTIME"
-  _LCMP _LCMP_P _LNEG _LINC _LMULU16x32 _ILSEXT _CASE_DIRECT_BYTE 
-  _CASE_CHECKED_BYTE _CASE_SEARCH_8 _CASE_SEARCH_8_BYTE 
+  _LSHL _LCMP _LCMP_P _LNEG _LMULS16x32 _lDivMod _NEG_P _LDIVS _ILSEXT 
+  _CASE_DIRECT_BYTE _CASE_CHECKED_BYTE _CASE_SEARCH_8 _CASE_SEARCH_8_BYTE 
 
 *********************************************************************************************
 OBJECT LIST SORTED BY ADDRESS
@@ -1207,10 +1250,10 @@ OBJECT LIST SORTED BY ADDRESS
      _TCTL4                                      4B       1       1       1   .abs_section_4b
      _TIE                                        4C       1       1       1   .abs_section_4c
      _TSCR2                                      4D       1       1       1   .abs_section_4d
-     _TFLG1                                      4E       1       1       2   .abs_section_4e
+     _TFLG1                                      4E       1       1       1   .abs_section_4e
      _TFLG2                                      4F       1       1       0   .abs_section_4f
-     _TC0                                        50       2       2       3   .abs_section_50
-     _TC1                                        52       2       2       3   .abs_section_52
+     _TC0                                        50       2       2       2   .abs_section_50
+     _TC1                                        52       2       2       2   .abs_section_52
      _TC2                                        54       2       2       6   .abs_section_54
      _TC3                                        56       2       2       3   .abs_section_56
      _TC4                                        58       2       2       0   .abs_section_58
@@ -1252,7 +1295,7 @@ OBJECT LIST SORTED BY ADDRESS
      _PWMCLK                                     E2       1       1       2   .abs_section_e2
      _PWMPRCLK                                   E3       1       1       2   .abs_section_e3
      _PWMCAE                                     E4       1       1       1   .abs_section_e4
-     _PWMCTL                                     E5       1       1       2   .abs_section_e5
+     _PWMCTL                                     E5       1       1       1   .abs_section_e5
      _PWMSCLA                                    E8       1       1       0   .abs_section_e8
      _PWMSCLB                                    E9       1       1       0   .abs_section_e9
      _PWMCNT01                                   EC       2       2       0   .abs_section_ec
@@ -1263,7 +1306,7 @@ OBJECT LIST SORTED BY ADDRESS
      _PWMPER45                                   F6       2       2       2   .abs_section_f6
      _PWMDTY01                                   F8       2       2       0   .abs_section_f8
      _PWMDTY23                                   FA       2       2       0   .abs_section_fa
-     _PWMDTY45                                   FC       2       2       4   .abs_section_fc
+     _PWMDTY45                                   FC       2       2       8   .abs_section_fc
      _PWMSDN                                     FE       1       1       0   .abs_section_fe
      _FCLKDIV                                   100       1       1       0   .abs_section_100
      _FSEC                                      101       1       1       0   .abs_section_101
@@ -1373,34 +1416,63 @@ OBJECT LIST SORTED BY ADDRESS
      _RDRAD                                     273       1       1       0   .abs_section_273
      _PERAD                                     274       1       1       0   .abs_section_274
      _PPSAD                                     275       1       1       0   .abs_section_275
-     countDown.4                                900       2       2       3   .data       
-     myMessageFlag                              902       1       1       3   .data       
-     pulseWidth                                 903       2       2       7   .data       
-     lookup                                     905       8       8       1   .data       
-     pbuf                                       90D       6       6      15   .bss        
-     firstEdgeFlagR                             913       2       2       3   .bss        
-     firstEdgeFlagL                             915       2       2       3   .bss        
-     firstEdgeR                                 917       4       4      16   .bss        
-     firstEdgeL                                 91B       4       4      16   .bss        
-     secondEdgeR                                91F       4       4      15   .bss        
-     secondEdgeL                                923       4       4      15   .bss        
-     RMotorPeriod                               927       4       4       4   .bss        
-     LMotorPeriod                               92B       4       4       4   .bss        
-     interruptCountR                            92F       4       4      10   .bss        
-     interruptCountL                            933       4       4      10   .bss        
-     receivePosition                            937       2       2       7   .bss        
-     instructStart                              939       1       1       2   .bss        
-     instructEnd                                93A       1       1       1   .bss        
-     ISRPulseWidth                              93B       2       2       4   .bss        
-     Edge                                       93D       1       1       4   .bss        
-     servoDirection                             93E       1       1       3   .bss        
-     limitswitches                              93F       2       2       5   .common     
-     stepCount                                  941       2       2       6   .common     
-     leftmotorduty                              943       1       1       1   .common     
-     rightmotorduty                             944       1       1       1   .common     
-     instructBuffer                             945       9       9       4   .common     
-     stepsize                                   94E       1       1      16   .common     
-     lastIndex                                  94F       2       2       3   .common     
+     tempCamHome                                900       6       6       1   .data       
+     countDown.4                                906       2       2       3   .data       
+     RiMax                                      908       2       2       2   .data       
+     RiMin                                      90A       2       2       2   .data       
+     RiGain                                     90C       2       2       1   .data       
+     RpGain                                     90E       2       2       1   .data       
+     LiMax                                      910       2       2       2   .data       
+     LiMin                                      912       2       2       2   .data       
+     LiGain                                     914       2       2       1   .data       
+     LpGain                                     916       2       2       1   .data       
+     myMessageFlag                              918       1       1       3   .data       
+     pulseWidth                                 919       2       2       7   .data       
+     lookup                                     91B       8       8       1   .data       
+     firstEdgeFlagR                             923       2       2       3   .bss        
+     firstEdgeFlagL                             925       2       2       3   .bss        
+     firstEdgeR                                 927       2       2       7   .bss        
+     firstEdgeL                                 929       2       2       7   .bss        
+     secondEdgeR                                92B       2       2       7   .bss        
+     secondEdgeL                                92D       2       2       7   .bss        
+     RMotorPeriod                               92F       2       2       3   .bss        
+     LMotorPeriod                               931       2       2       3   .bss        
+     RMotorFrequency                            933       4       4       4   .bss        
+     LMotorFrequency                            937       4       4       4   .bss        
+     RMotorSpeed                                93B       4       4       5   .bss        
+     LMotorSpeed                                93F       4       4       5   .bss        
+     interruptCountR                            943       2       2       8   .bss        
+     interruptCountL                            945       2       2       8   .bss        
+     REncoderSpeed                              947       4       4       4   .bss        
+     LEncoderSpeed                              94B       4       4       4   .bss        
+     REncoderFrequency                          94F       4       4       4   .bss        
+     LEncoderFrequency                          953       4       4       4   .bss        
+     RMotorSetPoint                             957       2       2       4   .bss        
+     LMotorSetPoint                             959       2       2       4   .bss        
+     pbuf                                       95B       6       6      15   .bss        
+     RMotorLocalPeriod                          961       4       4       3   .bss        
+     LMotorLocalPeriod                          965       4       4       3   .bss        
+     RpTerm                                     969       4       4       4   .bss        
+     LpTerm                                     96D       4       4       4   .bss        
+     RiTerm                                     971       4       4       5   .bss        
+     LiTerm                                     975       4       4       5   .bss        
+     Rerror                                     979       4       4       7   .bss        
+     Lerror                                     97D       4       4       7   .bss        
+     RtempPWMDuty                               981       4       4       3   .bss        
+     LtempPWMDuty                               985       4       4       3   .bss        
+     receivePosition                            989       2       2       7   .bss        
+     instructStart                              98B       1       1       2   .bss        
+     instructEnd                                98C       1       1       1   .bss        
+     ISRPulseWidth                              98D       2       2       4   .bss        
+     Edge                                       98F       1       1       4   .bss        
+     servoDirection                             990       1       1       3   .bss        
+     limitswitches                              991       2       2       5   .common     
+     stepCount                                  993       2       2       6   .common     
+     RiState                                    995       4       4      10   .common     
+     LiState                                    999       4       4      10   .common     
+     instructBuffer                             99D       9       9       4   .common     
+     stepsize                                   9A6       1       1      16   .common     
+     lastIndex                                  9A7       2       2       3   .common     
      Init                                      C000      29      41       1   .init       
      _Startup                                  C029       8       8       0   .init       
      pow10                                     C03B      28      40       4   .rodata     
@@ -1409,57 +1481,66 @@ OBJECT LIST SORTED BY ADDRESS
      STRING.Homing.Cam.5                       C0AF       B      11       1   .rodata1    
      STRING.Done.HomeCam.6                     C0BA       D      13       1   .rodata1    
      STRING.L.Motor.For.1                      C0C7       C      12       1   .rodata1    
-     STRING.L.Motor.Back.2                     C0D3       D      13       1   .rodata1    
-     STRING.L.Motor.Stop.3                     C0E0       D      13       1   .rodata1    
-     STRING.R.Motor.For.4                      C0ED       C      12       1   .rodata1    
-     STRING.R.Motor.Back.5                     C0F9       D      13       1   .rodata1    
-     STRING.R.Motor.Stop.6                     C106       D      13       1   .rodata1    
-     STRING.Servo.Dir..DOWN.1                  C113      10      16       1   .rodata1    
-     STRING.Servo.Dir..UP..2                   C123       F      15       1   .rodata1    
-     STRING.stepper.init.1                     C132       D      13       1   .rodata1    
-     STRING.STEPPER..R.2                       C13F       B      11       1   .rodata1    
-     STRING.STEPPER..L.3                       C14A       B      11       1   .rodata1    
-     main                                      C155      DC     220       2   .text       
-     receiveInstruction                        C231      62      98       1   .text       
-     servoMovement                             C293      58      88       1   .text       
-     stepperMovement                           C2EB      54      84       1   .text       
-     rightDCMotorSpeed                         C33F      ED     237       4   .text       
-     leftDCMotorSpeed                          C42C      ED     237       4   .text       
-     OverFlowISR                               C519      21      33       1   .text       
-     homeCam                                   C53A      68     104       1   .text       
-     vprintf                                   C5A2     478    1144      49   .text       
-     _out                                      CA1A       C      12       9   .text       
-     deposit_char                              CA26       F      15       1   .text       
-     vsprintf                                  CA35      29      41       1   .text       
-     strlen                                    CA5E      14      20       1   .text       
-     setDCMotorSpeed                           CA72      9F     159       1   .text       
-     DC_Motor_init                             CB11      34      52       1   .text       
-     msDelay                                   CB45      2E      46       4   .text       
-     LCDputc                                   CB73       3       3       1   .text       
-     LCDputs                                   CB76       F      15       1   .text       
-     LCDprintf                                 CB85      1C      28       7   .text       
-     LCDinit                                   CBA1      59      89       1   .text       
-     LCDclear                                  CBFA       5       5      11   .text       
-     LCDcmd                                    CBFF      37      55       5   .text       
-     LCDdata                                   CC36      37      55       1   .text       
-     initSCI                                   CC6D       F      15       1   .text       
-     echo                                      CC7C       3       3       1   .text       
-     putsSCI                                   CC7F      21      33       1   .text       
-     putcSCI                                   CCA0       9       9       1   .text       
-     setPulseWidth                             CCA9      2A      42       1   .text       
-     configureTimer                            CCD3      3E      62       1   .text       
-     stepperInit                               CD11      23      35       1   .text       
-     changeStep                                CD34      3F      63       1   .text       
-     _LCMP                                     CD73      19      25       4   RUNTIME     
-     _LCMP_P                                   CD8C      15      21       3   RUNTIME     
-     _LNEG                                     CDA1       D      13       1   RUNTIME     
-     _LINC                                     CDAE       5       5       2   RUNTIME     
-     _LMULU16x32                               CDB3       F      15       2   RUNTIME     
-     _ILSEXT                                   CDC2       7       7       2   RUNTIME     
-     _CASE_DIRECT_BYTE                         CDC9       5       5       1   RUNTIME     
-     _CASE_CHECKED_BYTE                        CDCE      14      20       1   RUNTIME     
-     _CASE_SEARCH_8                            CDE2      17      23       1   RUNTIME     
-     _CASE_SEARCH_8_BYTE                       CDF9      1A      26       1   RUNTIME     
+     STRING.L.Motor.For.2                      C0D3       C      12       1   .rodata1    
+     STRING.L.Motor.For.3                      C0DF       C      12       1   .rodata1    
+     STRING.L.Motor.For.4                      C0EB       C      12       1   .rodata1    
+     STRING.L.Motor.Stop.5                     C0F7       D      13       1   .rodata1    
+     STRING.L.Motor.For.6                      C104       C      12       1   .rodata1    
+     STRING.L.Motor.For.7                      C110       C      12       1   .rodata1    
+     STRING.L.Motor.For.8                      C11C       C      12       1   .rodata1    
+     STRING.L.Motor.For.9                      C128       C      12       1   .rodata1    
+     STRING.L.Motor.Stop.10                    C134       D      13       1   .rodata1    
+     STRING.Servo.Dir..DOWN.1                  C141      10      16       1   .rodata1    
+     STRING.Servo.Dir..UP..2                   C151       F      15       1   .rodata1    
+     STRING.stepper.init.1                     C160       D      13       1   .rodata1    
+     STRING.STEPPER..R.2                       C16D       B      11       1   .rodata1    
+     STRING.STEPPER..L.3                       C178       B      11       1   .rodata1    
+     main                                      C183      EC     236       3   .text       
+     receiveInstruction                        C26F      62      98       1   .text       
+     servoMovement                             C2D1      58      88       1   .text       
+     stepperMovement                           C329      54      84       1   .text       
+     rightDCMotorSpeed                         C37D      75     117       1   .text       
+     leftDCMotorSpeed                          C3F2      75     117       1   .text       
+     OverFlowISR                               C467      11      17       1   .text       
+     homeCam                                   C478      68     104       2   .text       
+     vprintf                                   C4E0     478    1144      49   .text       
+     _out                                      C958       C      12       9   .text       
+     deposit_char                              C964       F      15       1   .text       
+     vsprintf                                  C973      29      41       1   .text       
+     strlen                                    C99C      14      20       1   .text       
+     setDCMotorSpeed                           C9B0     14F     335       7   .text       
+     DC_Motor_init                             CAFF      30      48       1   .text       
+     RMotorPI                                  CB2F     130     304       3   .text       
+     LMotorPI                                  CC5F     130     304       3   .text       
+     msDelay                                   CD8F      2E      46       4   .text       
+     LCDputc                                   CDBD       3       3       1   .text       
+     LCDputs                                   CDC0       F      15       1   .text       
+     LCDprintf                                 CDCF      1C      28      11   .text       
+     LCDinit                                   CDEB      59      89       1   .text       
+     LCDclear                                  CE44       5       5      18   .text       
+     LCDcmd                                    CE49      37      55       5   .text       
+     LCDdata                                   CE80      37      55       1   .text       
+     initSCI                                   CEB7       F      15       1   .text       
+     echo                                      CEC6       3       3       1   .text       
+     putsSCI                                   CEC9      21      33       1   .text       
+     putcSCI                                   CEEA       9       9       1   .text       
+     setPulseWidth                             CEF3      2A      42       1   .text       
+     configureTimer                            CF1D      3A      58       1   .text       
+     stepperInit                               CF57      23      35       1   .text       
+     changeStep                                CF7A      3F      63       1   .text       
+     _LSHL                                     CFB9      11      17       2   RUNTIME     
+     _LCMP                                     CFCA      19      25       2   RUNTIME     
+     _LCMP_P                                   CFE3      15      21       3   RUNTIME     
+     _LNEG                                     CFF8       D      13       2   RUNTIME     
+     _LMULS16x32                               D005      1F      31      12   RUNTIME     
+     _lDivMod                                  D024      BE     190       2   RUNTIME     
+     _NEG_P                                    D0E2       F      15       4   RUNTIME     
+     _LDIVS                                    D0F1      35      53       6   RUNTIME     
+     _ILSEXT                                   D126       7       7      10   RUNTIME     
+     _CASE_DIRECT_BYTE                         D12D       5       5       1   RUNTIME     
+     _CASE_CHECKED_BYTE                        D132      14      20       1   RUNTIME     
+     _CASE_SEARCH_8                            D146      17      23       1   RUNTIME     
+     _CASE_SEARCH_8_BYTE                       D15D      1A      26       1   RUNTIME     
      _Vector_20                                FFD6       2       2       0   .abs_section_ffd6
      _Vector_16                                FFDE       2       2       0   .abs_section_ffde
      _Vector_10                                FFEA       2       2       0   .abs_section_ffea
@@ -1478,47 +1559,85 @@ STRING.C.o (ansisi.lib):
   _memset_clear_8bitCount strset strcat strncat strcpy strncpy strcmp strncmp 
   strchr strrchr strspn strcspn strpbrk strstr strtok strcoll strxfrm 
 rtshc12.c.o (ansisi.lib):
-  _BSHL _BSHRS _BSHRU _BDIVMODU _BDIVMODS _ISHL _ISHRU _ISHRS _LSHL _LSHRU 
-  _LSHRS _LADD _LSUB _LAND _LOR _LXOR _LCMP_PP _LCOM _LDEC _LMUL _LMULS16x32 
-  _lDivMod _LDIVU _NEG_P _LDIVS _LMODU _LMODS _COPY _CASE_DIRECT _CASE_CHECKED 
-  _CASE_SEARCH _CASE_SEARCH_BYTE _FCALL _FPCMP 
-DC Motor.c.o:
-  RMotorEncoder LMotorEncoder 
+  _BSHL _BSHRS _BSHRU _BDIVMODU _BDIVMODS _ISHL _ISHRU _ISHRS _LSHRU _LSHRS 
+  _LADD _LSUB _LAND _LOR _LXOR _LCMP_PP _LCOM _LINC _LDEC _LMUL _LMULU16x32 
+  _LDIVU _LMODU _LMODS _COPY _CASE_DIRECT _CASE_CHECKED _CASE_SEARCH 
+  _CASE_SEARCH_BYTE _FCALL _FPCMP 
 LCD.c.o:
   msDelay_init 
 NOT USED VARIABLES
 main.c.o:
-  tempCamHome 
+  secondEdgeFlagR secondEdgeFlagL 
 STRING.C.o (ansisi.lib):
   STRING..1 next.2 
 rtshc12.c.o (ansisi.lib):
   _PowOfTwo_8 _PowOfTwo_16 _PowOfTwo_32 errno 
 DC Motor.c.o:
-  secondEdgeFlagR secondEdgeFlagL RMotorFrequency LMotorFrequency RMotorSpeed 
-  LMotorSpeed RMotorOverflow LMotorOverflow REncoderSpeed LEncoderSpeed 
-  localRMotorPeriod localLMotorPeriod REncoderFrequency LEncoderFrequency 
+  leftmotorduty rightmotorduty 
 Servo.c.o:
   testVar2 result 
 
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xCE13 ---- SIZE       4 ---
+------- ROM-ADDRESS: 0xD177 ---- SIZE       4 ---
 Filling bytes inserted
- 000C0901
-------- ROM-ADDRESS: 0xCE17 ---- RAM-ADDRESS: 0x901 ---- SIZE       1 ---
+ 00230900
+------- ROM-ADDRESS: 0xD17B ---- RAM-ADDRESS: 0x900 ---- SIZE       5 ---
+Name of initialized Object : tempCamHome
+ 4320312030
+------- ROM-ADDRESS: 0xD180 ---- SIZE       2 ---
+Filling bytes inserted
+ 0000
+------- ROM-ADDRESS: 0xD182 ---- RAM-ADDRESS: 0x907 ---- SIZE       1 ---
 Name of initialized Object : countDown.4:1
  09
-------- ROM-ADDRESS: 0xCE18 ---- RAM-ADDRESS: 0x902 ---- SIZE       1 ---
+------- ROM-ADDRESS: 0xD183 ---- RAM-ADDRESS: 0x908 ---- SIZE       2 ---
+Name of initialized Object : RiMax
+ 0186
+------- ROM-ADDRESS: 0xD185 ---- RAM-ADDRESS: 0x90A ---- SIZE       2 ---
+Name of initialized Object : RiMin
+ FE7A
+------- ROM-ADDRESS: 0xD187 ---- SIZE       1 ---
+Filling bytes inserted
+ 00
+------- ROM-ADDRESS: 0xD188 ---- RAM-ADDRESS: 0x90D ---- SIZE       1 ---
+Name of initialized Object : RiGain:1
+ 01
+------- ROM-ADDRESS: 0xD189 ---- SIZE       1 ---
+Filling bytes inserted
+ 00
+------- ROM-ADDRESS: 0xD18A ---- RAM-ADDRESS: 0x90F ---- SIZE       1 ---
+Name of initialized Object : RpGain:1
+ 02
+------- ROM-ADDRESS: 0xD18B ---- RAM-ADDRESS: 0x910 ---- SIZE       2 ---
+Name of initialized Object : LiMax
+ 0186
+------- ROM-ADDRESS: 0xD18D ---- RAM-ADDRESS: 0x912 ---- SIZE       2 ---
+Name of initialized Object : LiMin
+ FE7A
+------- ROM-ADDRESS: 0xD18F ---- SIZE       1 ---
+Filling bytes inserted
+ 00
+------- ROM-ADDRESS: 0xD190 ---- RAM-ADDRESS: 0x915 ---- SIZE       1 ---
+Name of initialized Object : LiGain:1
+ 01
+------- ROM-ADDRESS: 0xD191 ---- SIZE       1 ---
+Filling bytes inserted
+ 00
+------- ROM-ADDRESS: 0xD192 ---- RAM-ADDRESS: 0x917 ---- SIZE       1 ---
+Name of initialized Object : LpGain:1
+ 02
+------- ROM-ADDRESS: 0xD193 ---- RAM-ADDRESS: 0x918 ---- SIZE       1 ---
 Name of initialized Object : myMessageFlag
  01
-------- ROM-ADDRESS: 0xCE19 ---- RAM-ADDRESS: 0x903 ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xD194 ---- RAM-ADDRESS: 0x919 ---- SIZE       2 ---
 Name of initialized Object : pulseWidth
  05DC
-------- ROM-ADDRESS: 0xCE1B ---- RAM-ADDRESS: 0x905 ---- SIZE       8 ---
+------- ROM-ADDRESS: 0xD196 ---- RAM-ADDRESS: 0x91B ---- SIZE       8 ---
 Name of initialized Object : lookup
  80A0206040 501090
-------- ROM-ADDRESS: 0xCE23 ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xD19E ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -1528,9 +1647,10 @@ OBJECT-DEPENDENCIES SECTION
 Init                      USES _startupData 
 _Startup                  USES __SEG_END_SSTACK Init main 
 main                      USES _PTS _DDRS _DDRT configureTimer LCDinit 
-                                DC_Motor_init initSCI stepperInit myMessageFlag 
-                                instructStart instructBuffer _CASE_CHECKED_BYTE changeStep 
-                                setPulseWidth homeCam echo main setDCMotorSpeed 
+                                DC_Motor_init initSCI stepperInit tempCamHome homeCam main 
+                                LMotorPI RMotorPI myMessageFlag instructStart 
+                                instructBuffer _CASE_CHECKED_BYTE changeStep setPulseWidth 
+                                echo setDCMotorSpeed 
 receiveInstruction        USES _SCISR1 receivePosition _SCIDRL instructBuffer 
                                 instructStart instructEnd myMessageFlag _CRGFLG countDown.4 
                                 _PTS 
@@ -1538,12 +1658,11 @@ servoMovement             USES servoDirection pulseWidth Edge ISRPulseWidth
                                 _TC2 
 stepperMovement           USES _CRGFLG _PTAD limitswitches stepsize stepCount 
                                 lastIndex lookup _PTT 
-rightDCMotorSpeed         USES firstEdgeFlagR rightDCMotorSpeed _TC0 
-                                firstEdgeR secondEdgeR _LCMP RMotorPeriod interruptCountR 
-                                _LMULU16x32 
-leftDCMotorSpeed          USES firstEdgeFlagL leftDCMotorSpeed _TC1 firstEdgeL 
-                                secondEdgeL _LCMP LMotorPeriod interruptCountL _LMULU16x32 
-OverFlowISR               USES _TCNT interruptCountR _LINC interruptCountL 
+rightDCMotorSpeed         USES firstEdgeFlagR interruptCountR _TC0 firstEdgeR 
+                                secondEdgeR RMotorPeriod 
+leftDCMotorSpeed          USES firstEdgeFlagL interruptCountL _TC1 firstEdgeL 
+                                secondEdgeL LMotorPeriod 
+OverFlowISR               USES _TCNT interruptCountR interruptCountL 
 homeCam                   USES LCDclear STRING.Homing.Cam.5 LCDprintf 
                                 pulseWidth stepsize limitswitches stepCount 
                                 STRING.Done.HomeCam.6 
@@ -1553,12 +1672,24 @@ vprintf                   USES vprintf _out _CASE_SEARCH_8_BYTE
 _out                      USES pbuf 
 deposit_char              USES pbuf 
 vsprintf                  USES pbuf deposit_char vprintf 
-setDCMotorSpeed           USES _PORTAB STRING.L.Motor.For.1 
-                                STRING.L.Motor.Back.2 LCDclear STRING.L.Motor.Stop.3 LCDprintf 
-                                leftmotorduty _PWMDTY45 STRING.R.Motor.For.4 
-                                STRING.R.Motor.Back.5 STRING.R.Motor.Stop.6 rightmotorduty 
+setDCMotorSpeed           USES setDCMotorSpeed LCDclear STRING.L.Motor.For.1 
+                                STRING.L.Motor.For.2 LCDprintf _PORTAB STRING.L.Motor.For.3 
+                                STRING.L.Motor.For.4 LMotorSetPoint STRING.L.Motor.Stop.5 
+                                STRING.L.Motor.For.6 STRING.L.Motor.For.7 STRING.L.Motor.For.8 
+                                STRING.L.Motor.For.9 RMotorSetPoint STRING.L.Motor.Stop.10 
+                                _PWMDTY45 
 DC_Motor_init             USES _DDRAB _PWMCTL _PWMPRCLK _PWMCLK _PWMPOL 
-                                _PWMCAE _PWME _PWMCNT45 _PWMPER45 _PWMDTY45 
+                                _PWMCAE _PWMCNT45 _PWMPER45 _PWMDTY45 _PWME 
+RMotorPI                  USES RMotorPeriod _ILSEXT RMotorLocalPeriod _LSHL 
+                                _LDIVS REncoderFrequency _LMULS16x32 RMotorPI 
+                                REncoderSpeed RMotorFrequency RMotorSpeed RMotorSetPoint 
+                                Rerror RpGain RpTerm RiState RiMax RiMin RiGain 
+                                RiTerm RtempPWMDuty _PWMDTY45 _LCMP 
+LMotorPI                  USES LMotorPeriod _ILSEXT LMotorLocalPeriod _LSHL 
+                                _LDIVS LEncoderFrequency _LMULS16x32 LMotorPI 
+                                LEncoderSpeed LMotorFrequency LMotorSpeed LMotorSetPoint 
+                                Lerror LpGain LpTerm LiState LiMax LiMin LiGain 
+                                LiTerm LtempPWMDuty _PWMDTY45 _LCMP 
 msDelay                   USES _TCNT _TC3 _TIOS _TFLG1 
 LCDputc                   USES LCDdata 
 LCDputs                   USES LCDputc 
@@ -1573,12 +1704,14 @@ putsSCI                   USES strlen putcSCI
 putcSCI                   USES _SCISR1 _SCIDRL 
 setPulseWidth             USES servoDirection LCDclear 
                                 STRING.Servo.Dir..DOWN.1 STRING.Servo.Dir..UP..2 LCDprintf 
-configureTimer            USES _TSCR2 _TSCR1 _TIOS _TCTL4 _TIE _TCTL1 _CFORC 
-                                Edge _TCNT _TC2 _TFLG1 
+configureTimer            USES _TSCR2 _TSCR1 _TIOS _TCTL1 _CFORC Edge _TCTL4 
+                                _TIE _TCNT _TC2 
 stepperInit               USES LCDclear STRING.stepper.init.1 LCDprintf 
                                 _ATDDIEN stepsize lastIndex _RTICTL _CRGFLG _CRGINT 
 changeStep                USES stepsize LCDclear STRING.STEPPER..R.2 
                                 STRING.STEPPER..L.3 LCDprintf 
+_LMULS16x32               USES _LNEG 
+_LDIVS                    USES _NEG_P _lDivMod 
 _Vector_20                USES receiveInstruction 
 _Vector_16                USES OverFlowISR 
 _Vector_10                USES servoMovement 
@@ -1645,6 +1778,42 @@ DEPENDENCY TREE
  |  |              | 
  |  |              +- msDelay              (see above)
  |  |                 
+ |  +- homeCam             
+ |  |  | 
+ |  |  +- LCDclear             (see above)
+ |  |  |  
+ |  |  +- LCDprintf            (see above)
+ |  |     
+ |  +- LMotorPI            
+ |  |  | 
+ |  |  +- _ILSEXT              (see above)
+ |  |  |  
+ |  |  +- _LSHL               
+ |  |  |    
+ |  |  +- _LDIVS              
+ |  |  |  | 
+ |  |  |  +- _NEG_P              
+ |  |  |  |    
+ |  |  |  +- _lDivMod            
+ |  |  |       
+ |  |  +- _LMULS16x32         
+ |  |  |  | 
+ |  |  |  +- _LNEG                (see above)
+ |  |  |     
+ |  |  +- _LCMP               
+ |  |       
+ |  +- RMotorPI            
+ |  |  | 
+ |  |  +- _ILSEXT              (see above)
+ |  |  |  
+ |  |  +- _LSHL                (see above)
+ |  |  |  
+ |  |  +- _LDIVS               (see above)
+ |  |  |  
+ |  |  +- _LMULS16x32          (see above)
+ |  |  |  
+ |  |  +- _LCMP                (see above)
+ |  |     
  |  +- _CASE_CHECKED_BYTE  
  |  |    
  |  +- changeStep          
@@ -1654,12 +1823,6 @@ DEPENDENCY TREE
  |  |  +- LCDprintf            (see above)
  |  |     
  |  +- setPulseWidth       
- |  |  | 
- |  |  +- LCDclear             (see above)
- |  |  |  
- |  |  +- LCDprintf            (see above)
- |  |     
- |  +- homeCam             
  |  |  | 
  |  |  +- LCDclear             (see above)
  |  |  |  
@@ -1700,25 +1863,15 @@ DEPENDENCY TREE
  _Vector_8           
  | 
  +- rightDCMotorSpeed   
-    | 
-    +- _LCMP               
-    |    
-    +- _LMULU16x32         
-         
+      
  _Vector_9           
  | 
  +- leftDCMotorSpeed    
-    | 
-    +- _LCMP                (see above)
-    |  
-    +- _LMULU16x32          (see above)
-       
+      
  _Vector_16          
  | 
  +- OverFlowISR         
-    | 
-    +- _LINC               
-         
+      
 *********************************************************************************************
 STATISTIC SECTION
 ---------------------------------------------------------------------------------------------
@@ -1726,5 +1879,5 @@ STATISTIC SECTION
 ExeFile:
 --------
 Number of blocks to be downloaded: 12
-Total size of all blocks to be downloaded: 3635
+Total size of all blocks to be downloaded: 4526
 

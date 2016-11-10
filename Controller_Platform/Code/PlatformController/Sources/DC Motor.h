@@ -10,7 +10,10 @@
 #define ECLOCK 8000000
 #define MOTORPRESCALER 8  // divide by 8 prescaler
 #define RWHEELDIAMETER 53
-#define LWHEELDIAMETER 53  
+#define LWHEELDIAMETER 53
+
+#define SENSORGAIN 613
+#define FEEDBACK_SCALE_FACTOR 16777216  
 //Motor Macros
 #define   ENABLE_PWM_CHNL(chnl)       SET_BITS(PWME,1<<(chnl))
 #define   MOTOR_ENABLE_PORT           PORTB
@@ -23,10 +26,10 @@
 #define   MOTOR_R_DUTY                PWMDTY4   //0 - 100
 #define   MOTOR_L_DUTY                PWMDTY5   //0 - 100        
 
-#define SET_PERIOD    100
+#define SET_PERIOD    255 //test value
 #define INIT_DUTY     0
-#define INIT_PWMCTL   0b00000000
-#define INIT_PWMPRCLK 0b00000000
+#define INIT_PWMCTL   0b00000100
+#define INIT_PWMPRCLK 0b00000000 //change back from SA
 #define INIT_PWMCLK   0b00000000
 #define INIT_PWMPOL   0b00110000
 #define INIT_PWMCAE   0b00110000
@@ -57,35 +60,41 @@
 //PROTOTYPES
  void DC_Motor_init(void);
  void setDCMotorSpeed(unsigned char *instructPtr);
- void RMotorEncoder();
+ long int RMotorEncoder();
+ long int LMotorEncoder();
+ void RMotorPI();
+ void LMotorPI();
 
 //Globals
 extern char leftmotorduty;
 extern char rightmotorduty;
 
 //Globals for DC motor Speed calculations
-extern unsigned int volatile firstEdgeFlagR;
-extern unsigned int volatile firstEdgeFlagL;
-extern unsigned int volatile secondEdgeFlagR;
-extern unsigned int volatile secondEdgeFlagL;
-extern unsigned long int volatile firstEdgeR;
-extern unsigned long int volatile firstEdgeL;
-extern unsigned long int volatile secondEdgeR;
-extern unsigned long int volatile secondEdgeL;
-extern signed long int volatile RMotorPeriod;
-extern signed long int volatile LMotorPeriod;
+extern signed int volatile firstEdgeFlagR;
+extern signed int volatile firstEdgeFlagL;
+extern signed int volatile secondEdgeFlagR;
+extern signed int volatile secondEdgeFlagL;
+extern signed int volatile firstEdgeR;
+extern signed int volatile firstEdgeL;
+extern signed int volatile secondEdgeR;
+extern signed int volatile secondEdgeL;
+extern signed int volatile RMotorPeriod;
+extern signed int volatile LMotorPeriod;
 extern signed long int volatile RMotorFrequency;
 extern signed long int volatile LMotorFrequency;
 extern signed long int volatile RMotorSpeed;
 extern signed long int volatile LMotorSpeed;
-extern unsigned long int volatile interruptCountR;
-extern unsigned long int volatile interruptCountL;
-extern unsigned char volatile RMotorOverflow;
-extern unsigned char volatile LMotorOverflow;
+extern signed int volatile interruptCountR;
+extern signed int volatile interruptCountL;
+//extern signed char volatile RMotorOverflow;
+//extern signed char volatile LMotorOverflow;
 extern signed long int volatile REncoderSpeed;
 extern signed long int volatile LEncoderSpeed;
 extern signed long int volatile REncoderFrequency;
 extern signed long int volatile LEncoderFrequency;
-
+extern signed int volatile RMotorSetPoint;
+extern signed int volatile LMotorSetPoint;
+extern signed long int RMotorLocalPeriod;
+extern signed long int LMotorLocalPeriod;
 
 #endif
