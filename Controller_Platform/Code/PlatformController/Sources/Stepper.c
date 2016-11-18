@@ -59,7 +59,7 @@ void stepperInit(void)
 
 void changeStep(unsigned char *instructPtr) 
 {
-  if(instructPtr[2] == '2') 
+  if(instructPtr[2] == '1') 
   {
     DisableInterrupts;
     stepsize = 1;
@@ -68,7 +68,7 @@ void changeStep(unsigned char *instructPtr)
     LCDprintf("STEPPER: R"); 
   }
   
-  else if(instructPtr[2] == '1')
+  else if(instructPtr[2] == '2')
   {
     DisableInterrupts;
     stepsize = -1;

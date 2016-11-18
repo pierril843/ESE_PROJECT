@@ -36,11 +36,11 @@ void setPulseWidth(unsigned char *instructPtr)
    
    if(instructPtr[2] == '1') {
    LCDclear();
-   LCDprintf("Servo Dir: DOWN");
+   LCDprintf("Servo Dir: UP");
    } 
    else if (instructPtr[2] == '2') {
    LCDclear();
-   LCDprintf("Servo Dir: UP ");
+   LCDprintf("Servo Dir: DW");
    } 
 }
 

@@ -269,12 +269,12 @@ Outputs - OC action is toggled every event
 interrupt 10 void servoMovement(void)
 {
   // If direction up and not at up limit: move servo up
-  if ((servoDirection == '1') && (pulseWidth <= 2350))
+  if ((servoDirection == '1') && (pulseWidth >= 1300))
   {
     pulseWidth -= 5;
   }
   // If direction down and not at down limit: move servo down
-  else if ((servoDirection == '2') && (pulseWidth >= 1300))
+  if ((servoDirection == '2') && (pulseWidth <= 2350))
   {
     pulseWidth += 5;
   }

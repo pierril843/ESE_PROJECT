@@ -39,13 +39,13 @@ signed long int LMotorLocalPeriod = 0;
 
 signed long int volatile RiState;
 signed long int volatile LiState;
-signed int volatile RiMax = 390;
-signed int volatile RiMin = -390;
-signed int volatile RiGain = 1;
+signed int volatile RiMax = 500;
+signed int volatile RiMin = -500;
+signed int volatile RiGain = 2;
 signed int volatile RpGain = 2;
-signed int volatile LiMax = 390;
-signed int volatile LiMin = -390;
-signed int volatile LiGain = 1;
+signed int volatile LiMax = 500;
+signed int volatile LiMin = -500;
+signed int volatile LiGain = 2;
 signed int volatile LpGain = 2;
 //signed int volatile dGain;
 //signed int volatile error;
@@ -71,7 +71,7 @@ void setDCMotorSpeed(unsigned char *instructPtr)
 			{
 				DisableInterrupts;
 				LMotorSetPoint = 208;
-				MOTOR_L_DUTY = 150;      
+				//MOTOR_L_DUTY = 150;      
 				EnableInterrupts;
 				LCDclear();
 				LCDprintf("L Motor For");
@@ -81,7 +81,7 @@ void setDCMotorSpeed(unsigned char *instructPtr)
 			{
 				DisableInterrupts;
 				LMotorSetPoint = 388;
-				MOTOR_L_DUTY = 225;
+				//MOTOR_L_DUTY = 225;
 				EnableInterrupts;
 				LCDclear();
 				LCDprintf("L Motor For");
@@ -94,7 +94,7 @@ void setDCMotorSpeed(unsigned char *instructPtr)
 			{		
 				DisableInterrupts;
 				LMotorSetPoint = 208;
-				MOTOR_L_DUTY = 150;
+				//MOTOR_L_DUTY = 150;
 				EnableInterrupts;
 				LCDclear();
 				LCDprintf("L Motor For");
@@ -104,7 +104,7 @@ void setDCMotorSpeed(unsigned char *instructPtr)
 			{
 				DisableInterrupts;
 				LMotorSetPoint = 388;
-				MOTOR_L_DUTY = 225;
+				//MOTOR_L_DUTY = 225;
 				EnableInterrupts;
 				LCDclear();
 				LCDprintf("L Motor For");
@@ -129,7 +129,7 @@ void setDCMotorSpeed(unsigned char *instructPtr)
 			{				
 				DisableInterrupts;
 				RMotorSetPoint = 208;
-				MOTOR_R_DUTY = 150;
+				//MOTOR_R_DUTY = 150;
 				EnableInterrupts;
 				LCDclear();
 				LCDprintf("L Motor For");
@@ -139,7 +139,7 @@ void setDCMotorSpeed(unsigned char *instructPtr)
 			{
 				DisableInterrupts;
 				RMotorSetPoint = 388;
-				MOTOR_R_DUTY = 225;
+				//MOTOR_R_DUTY = 225;
 				EnableInterrupts;
 				LCDclear();
 				LCDprintf("L Motor For");
@@ -153,7 +153,7 @@ void setDCMotorSpeed(unsigned char *instructPtr)
 			{ 				
 				DisableInterrupts;
 				RMotorSetPoint = 208;
-				MOTOR_R_DUTY = 150;
+				//MOTOR_R_DUTY = 150;
 				EnableInterrupts;
 				LCDclear();
 				LCDprintf("L Motor For");
@@ -164,7 +164,7 @@ void setDCMotorSpeed(unsigned char *instructPtr)
 			{
 				DisableInterrupts;
 				RMotorSetPoint = 388;
-				MOTOR_R_DUTY = 225;
+				//MOTOR_R_DUTY = 225;
 				EnableInterrupts;
 				LCDclear();
 				LCDprintf("L Motor For");
@@ -239,7 +239,7 @@ void RMotorPI()
    //assign duty with (pTerm+iTerm - dTerm)
    
     
-    RtempPWMDuty = ((((RpTerm + RiTerm) * 100)/21)/10); 
+    RtempPWMDuty = ((((RpTerm + RiTerm) * 100)/59)/10); 
     MOTOR_R_DUTY = RtempPWMDuty;
   
   
@@ -277,7 +277,7 @@ void LMotorPI()
    //assign duty with (pTerm+iTerm - dTerm)
    
     
-    LtempPWMDuty = ((((LpTerm + LiTerm) * 100)/21)/10); 
+    LtempPWMDuty = ((((LpTerm + LiTerm) * 100)/59)/10); 
     MOTOR_L_DUTY = LtempPWMDuty;
   
   
