@@ -10,6 +10,7 @@
 #include "Sockets.h"
 #include "Protocol.h"
 #include "netdb.h"
+#include "string.h"
 
 #include "errno.h"
 #define SERVER_IP "192.168.0.108"
@@ -50,7 +51,7 @@ int Socket_Server_Init(){
 		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Failed to bind socket");
 		return(EXIT_FAILURE);
 	}
-	return(listenfd);
+	return(accept(listenfd, (struct sockaddr*)NULL, NULL));
 }
 
 int Socket_Client_Init(){
@@ -88,16 +89,13 @@ int Socket_Client_Init(){
     return(sockfd);
 }
 
-int Socket_Read(int listenfd, char (Message[PACKET_LEN])){
-	int connfd = 0;
-	connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
+int Socket_Read(int connfd, char (Message[PACKET_LEN])){
     if (read(connfd, Message, PACKET_LEN) < PACKET_LEN){
     	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Didnt read whole command from socket");
     	close(connfd);
     	return(EXIT_FAILURE);
     }
     write(connfd,*Message, PACKET_LEN);
-    close(connfd);
     return(EXIT_SUCCESS);
 }
 int Socket_Write(int sockfd, char Message[PACKET_LEN]){

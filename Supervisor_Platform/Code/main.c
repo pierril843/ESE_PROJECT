@@ -22,7 +22,7 @@
 #define PRINT_COMMANDS 	1
 #define RS_232		1
 #define SOCKETS		0
-#define CONNECTION  RS_232
+#define CONNECTION  SOCKETS
 
 
 int main(void) {

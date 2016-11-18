@@ -10,8 +10,10 @@
 #include "Sockets.h"
 #include "Protocol.h"
 #include "netdb.h"
+#include "string.h"
 
-#define SERVER_IP "174.114.123.81"
+#include "errno.h"
+#define SERVER_IP "192.168.0.108"
 
 int Socket_Init(int processType){
 	if (processType == CLIENT){
@@ -27,7 +29,7 @@ int Socket_Server_Init(){
 	struct sockaddr_in serv_addr;
 
 	//Create socket
-	if ((listenfd = socket(AF_INET, SOCK_STREAM, 0)) == EXIT_FAILURE){
+	if ((listenfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
 		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Failed to create socket");
 		return(EXIT_FAILURE);
 	}
@@ -49,7 +51,7 @@ int Socket_Server_Init(){
 		syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Failed to bind socket");
 		return(EXIT_FAILURE);
 	}
-	return(listenfd);
+	return(accept(listenfd, (struct sockaddr*)NULL, NULL));
 }
 
 int Socket_Client_Init(){
@@ -58,7 +60,7 @@ int Socket_Client_Init(){
 	struct hostent *host;
 	int addr;
 	
-	host = gethostbyname ("localhost");
+	host = gethostbyname (SERVER_IP);
 
 	memcpy(&addr, host->h_addr, host->h_length);
 
@@ -81,22 +83,19 @@ int Socket_Client_Init(){
 
     if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
-    	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Failed to connect socket");
+    	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Failed to connect socket errno:%d", errno);
     	return(EXIT_FAILURE);
     }
     return(sockfd);
 }
 
-int Socket_Read(int listenfd, char (Message[PACKET_LEN])){
-	int connfd = 0;
-	connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
+int Socket_Read(int connfd, char (Message[PACKET_LEN])){
     if (read(connfd, Message, PACKET_LEN) < PACKET_LEN){
     	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Didnt read whole command from socket");
     	close(connfd);
     	return(EXIT_FAILURE);
     }
     write(connfd,*Message, PACKET_LEN);
-    close(connfd);
     return(EXIT_SUCCESS);
 }
 int Socket_Write(int sockfd, char Message[PACKET_LEN]){
@@ -105,16 +104,16 @@ int Socket_Write(int sockfd, char Message[PACKET_LEN]){
     	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Didnt write whole command from socket");
     	return(EXIT_FAILURE);
     }
-
-    if (read(sockfd,returnMessage, PACKET_LEN) < PACKET_LEN){
-    	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Didnt read whole command from socket");
-    	return(EXIT_FAILURE);
-    }
-
-    if (strcmp(Message,returnMessage) != EXIT_SUCCESS){
-    	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Command sent doesnt equal command received");
-    	return(EXIT_FAILURE);
-    }
+//    sleep(250);
+//    if (read(sockfd,returnMessage, PACKET_LEN) < PACKET_LEN){
+//    	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Didnt read whole command from socket");
+//    	return(EXIT_FAILURE);
+//    }
+//
+//    if (strcmp(Message,returnMessage) != EXIT_SUCCESS){
+//    	syslog(LOG_MAKEPRI(LOG_LOCAL0, LOG_ERR),"Command sent doesnt equal command received");
+//    	return(EXIT_FAILURE);
+//    }
     return(EXIT_SUCCESS);
 }
 //todo close sockets after clients fails

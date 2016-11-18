@@ -20,7 +20,7 @@
 #define STEPPER		'S' //D-pad left-right
 #define L_MOTOR		'L' //Left stick up-down
 #define R_MOTOR 	'R' //Right stick up-down
-#define START		'X' //start button TODO:rename if action is defined
+#define START		'X' //start button / collect data 
 #define SELECT 		'Y' //Back button TODO:rename if action is defined
 #define A_BUTTON 	'A' //... TODO:rename if action is defined
 #define B_BUTTON 	'B' //... TODO:rename if action is defined
@@ -39,7 +39,7 @@
 #define ZEROED		'0' //Centered
 //Speed translation
 #define MAX_A_JS 	36410	//Max values under joy stick protocol
-#define VAR_SPEEDS	5		//Number of different speeds to translate to
+#define VAR_SPEEDS	2		//Number of different speeds to translate to
 #define BINSIZE 	(MAX_A_JS/VAR_SPEEDS)
 
 #endif /* PROTOCOL_H_ */

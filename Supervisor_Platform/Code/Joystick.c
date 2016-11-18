@@ -37,6 +37,8 @@ void* MonitorJoyStick (void * args){
 	int Joy_fd;
 	struct js_event js;
 	char message[PACKET_LEN] = "~ F 0 0 ?";
+	char preR = '0';
+	char preL = '0';
 	int pipefd[PIPE_ENDS];
 	pipefd[PIPEREAD] = ((int*)args)[PIPEREAD];
 	pipefd[PIPEWRITE] = ((int*)args)[PIPEWRITE];
@@ -95,7 +97,10 @@ void* MonitorJoyStick (void * args){
 					message[ARG2] = UP;
 				else
 					message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				if (preL != message[ARG1]){
+					Piper(pipefd,message);
+					preL = message[ARG1];
+				}
 				break;
 			}
 			case (3) :{		//R-ANALOG UP-DOWN
@@ -107,7 +112,10 @@ void* MonitorJoyStick (void * args){
 					message[ARG2] = UP;
 				else
 					message[ARG2] = ZEROED;
-				Piper(pipefd,message);
+				if (preR != message[ARG1]){
+					Piper(pipefd,message);
+					preR = message[ARG1];
+				}
 				break;
 			}
 			default :
